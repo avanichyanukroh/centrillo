@@ -5,7 +5,12 @@ var MOCK_USER_LOGIN = {
         {
             "id": "1111111",
             "username": "alvin",
-            "password": "alvin12345",
+            "password": "alvin12345"
+        },
+        {
+            "id": "2222222",
+            "username": "jay",
+            "password": "jay12345"
         }
     ]
 };
