@@ -1,6 +1,11 @@
 // this is mock data, but when we create our API
 // we'll have it return data that looks like this
-var MOCK_TASKS = {
+var MOCK_USER = {
+
+    "id": "1111111",
+    "username": "alvin",
+    "password": "alvin12345",
+
 	"taskList": [
         {
             "categoryTitle": "Groceries",
@@ -115,7 +120,7 @@ var MOCK_TASKS = {
 function getRecentStatusUpdates(callbackFn) {
     // we use a `setTimeout` to make this asynchronous
     // as it would be with a real AJAX call.
-	setTimeout(function(){ callbackFn(MOCKTASKS)}, 1);
+	setTimeout(function(){ callbackFn(MOCK_USER)}, 1);
 }
 
 // this function stays the same when we connect
