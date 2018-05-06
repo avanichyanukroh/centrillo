@@ -8,9 +8,11 @@ var MOCK_USER = {
 
 	"taskList": [
         {
+
             "categoryTitle": "Groceries",
             "tasks": [
                 {
+
                     "taskTitle": "stop by Ralphs",
                     "taskComplete": false,
                     "dateDue": "date due placeholder",
@@ -32,7 +34,7 @@ var MOCK_USER = {
                             "note": "prefer Campbells"
                         }
                     ]
-                 },
+                },
                 {
                     "taskTitle": "stop by Vons",
                     "taskComplete": false,
@@ -127,8 +129,11 @@ function getRecentStatusUpdates(callbackFn) {
 // to real API later
 function displayStatusUpdates(data) {
     for (index in data.taskList) {
-	   $('body').append(
-        '<p>' + data.taskList[index].text + '</p>');
+	   $('#username').append(
+        
+        data.username
+
+        );
     }
 }
 

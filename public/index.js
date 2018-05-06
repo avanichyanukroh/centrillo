@@ -1,3 +1,6 @@
+  
+
+
   $('.dropdown').on('shown.bs.dropdown', function () {
     var menu = $(this).find('.dropdown-menu');
     var menuLeft = menu.offset().left;
@@ -6,8 +9,7 @@
     if (menuLeft + menuWidth > documentWidth) {
       menu.offset({'left': documentWidth - menuWidth});
     }
-  })
-};
+  });
 
 
 function watchNavCollapseToggle() {
