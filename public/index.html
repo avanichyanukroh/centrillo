@@ -9,7 +9,7 @@
 		<title>Circle.it</title>
 	</head>
 	<body class="bg-secondary">
-		<header class="bg-primary sticky-top shadow p-1">
+		<header class="bg-primary sticky-top shadow">
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-12">
@@ -17,7 +17,7 @@
 						<h1 class="d-none d-md-block text-center">Circle.it</h1>
 
 						<!-- bars icon for mobile viewport (collapse) drop down menu -->
-						<i class="fa fa-bars fa-lg navbar-toggler float-left d-md-none mt-2" id="navCollapse" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation"></i>
+						<i class="fa far fa-bars fa-lg navbar-toggler float-left d-md-none mt-1 p-2" id="navCollapse" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation"></i>
 
 						<!-- cog dropdown menu -->
 						<nav class="navbar float-right">
@@ -34,7 +34,7 @@
 									<h5>Hello!</h5>
 									<i class="fas fa-user"></i>
 									&nbsp;
-									<div id="username"></div>
+									<span id="username"></span>
 									</a>
 
 									<a class="dropdown-item" href="#">
@@ -59,7 +59,7 @@
 
 					<!-- collapsed menu for bars icon -->	
 				<div class="collapse" id="navbarToggleExternalContent">
-					<div class="bg-light p-3">
+					<div class="bg-light p-3 mb-3 mt-3">
 
 						<a class="list-group-item pl-4 border-0 bg-light" href="#">
 							<i class="far fa-calendar fa-lg"></i>
@@ -96,22 +96,9 @@
 
 								<div id="collapse-sm-1" class="collapse show border-top" data-parent="#accordion">
 
-									<!-- categories item list-->
-									<div class="list-group">
+									<!-- categories item list (mobile)-->
+									<div class="list-group" id="categories-m"></div>
 
-										<a class="list-group-item pl-5 bg-light border-0" href="#">
-											<i class="fas fa-circle fa-xs text-info"></i>
-											&nbsp;
-											Groceries
-										</a>
-
-										<a class="list-group-item pl-5 bg-light border-0" href="#">
-											<i class="fas fa-circle fa-xs text-info"></i>
-											&nbsp;
-											School
-										</a>
-
-									</div>
 								</div>
 							</div>
 							<div>
@@ -124,7 +111,7 @@
 
 								<div id="collapse-sm-2" class="collapse border-top" data-parent="#accordion">
 
-									<!-- filters item list-->
+									<!-- filters item list (mobile)-->
 									<div class="list-group">
 
 										<a class="list-group-item pl-5 bg-light border-0" href="#">
@@ -148,7 +135,7 @@
 			</div>
 		</header>
 
-		<!-- side bar nav -->
+		<!-- side bar nav (non-mobile device)-->
 		<div class="container">
 			<div class="row">
 				<div class="col-4 bg-secondary d-none d-md-block">
@@ -188,22 +175,9 @@
 
 							<div id="collapse-1" class="collapse show border-top" data-parent="#accordion">
 
-								<!-- categories item list-->
-								<div class="list-group">
+								<!-- categories item list (non-mobile)-->
+								<div class="list-group" id="categories"></div>
 
-									<a class="list-group-item pl-5 bg-light border-0" href="#">
-										<i class="fas fa-circle fa-xs text-info"></i>
-										&nbsp;
-										Groceries
-									</a>
-
-									<a class="list-group-item pl-5 bg-light border-0" href="#">
-										<i class="fas fa-circle fa-xs text-info"></i>
-										&nbsp;
-										School
-									</a>
-
-								</div>
 							</div>
 						</div>
 						<div>
@@ -216,7 +190,7 @@
 
 							<div id="collapse-2" class="collapse border-top" data-parent="#accordion">
 
-								<!-- item list-->
+								<!-- filters item list (non-mobile)-->
 								<div class="list-group">
 
 									<a class="list-group-item pl-5 bg-light border-0" href="#">
@@ -238,12 +212,8 @@
 				</div>
 
 				<!-- main content -->
-				<div class="col-md-8 bg-white p-5">
-
-					<h2>Category</h2>
-					<p>tasks</p>
-
-				</div>
+				<div class="col-md-8 bg-white p-5" id="mainContent"></div>
+				
 			</div>
 		</div>
 
