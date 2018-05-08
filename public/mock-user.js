@@ -12,6 +12,7 @@ let MOCK_USER_PROFILE = {
                 {
 
                     "taskTitle": "stop by Ralphs",
+                    //add category: , then filter by category, 
                     "taskComplete": false,
                     "dateDue": "date due placeholder",
                     "timeDue": "time due placeholder",
@@ -170,7 +171,7 @@ function displayUserProfile(data) {
                         <span>${data.taskList[i].tasks[j].timeDue}</span>
                         <span>${data.taskList[i].tasks[j].note}</span>
                     </span>
-                    
+
                     <ul class="subtasks-${j} list-unstyled"></ul>
                 </li>
 
