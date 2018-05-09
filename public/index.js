@@ -22,11 +22,11 @@ function watchNavCollapseToggle() {
 }
 
 //changes dropdown arrow icon direction after expanding or collapsing
-function watchNavCollapseToggle() {
+function watchArrowToggle() {
 
-    $("#navCollapse").click(function() {
+    $(".arrowToggle").click(function() {
 
-    $(this).toggleClass("fa-window-close fa-bars");
+    $(this).toggleClass("fa-angle-down fa-angle-up");
 
     });
 }
@@ -47,4 +47,5 @@ function watchCategoryItemDisplay() {
 }
 
 $(watchNavCollapseToggle);
+$(watchArrowToggle);
 $(watchCategoryItemDisplay);

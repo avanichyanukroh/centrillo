@@ -165,7 +165,7 @@ function displayUserProfile(data) {
                     <i class="far fa-circle"></i>
                     <span class="">${data.taskList[i].tasks[j].taskTitle}</span>
 
-                    <span class="invisible">
+                    <span class="d-none">
                         <span>${data.taskList[i].tasks[j].taskComplete}</span>
                         <span>${data.taskList[i].tasks[j].dateDue}</span>
                         <span>${data.taskList[i].tasks[j].timeDue}</span>
@@ -187,7 +187,7 @@ function displayUserProfile(data) {
                         <i class="far fa-circle pl-3"></i>
                         <span class="">${data.taskList[i].tasks[j].subtasks[k].subtaskTitle}</span>
 
-                        <span class="invisible">
+                        <span class="d-none">
                             <span>${data.taskList[i].tasks[j].subtasks[k].taskComplete}</span>
                             <span>${data.taskList[i].tasks[j].subtasks[k].dateDue}</span>
                             <span>${data.taskList[i].tasks[j].subtasks[k].timeDue}</span>

@@ -76,3 +76,7 @@ body{
 	padding-bottom: 15px;
 	text-align: center;
 }
+
+.navbar {
+	padding: 0;
+}
