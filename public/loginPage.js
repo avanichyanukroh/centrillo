@@ -12,7 +12,7 @@ function watchSubmit() {
 
 	const settings = {
 
-		url: "localhost:8080/user-login",
+		url: "https://circleitmvp.herokuapp.com/user-login",
 		type: 'POST',
 		dataType: 'json',
 		success: function(data) {
