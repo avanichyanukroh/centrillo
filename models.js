@@ -1,11 +1,13 @@
-const bcrypt = require('bcryptjs');
+ /*const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise;
+//mongoose.Promise = global.Promise;
 // this is our schema to represent a user
 const userSchema = mongoose.Schema({
   // the `name` property is String type and required
-  username: {type: String, required: true, unique: true},
+  
+
+ username: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   task: [{
     taskTitle: String,
@@ -23,14 +25,40 @@ const userSchema = mongoose.Schema({
   }]
 });
 
-UserSchema.methods.validatePassword = function(password) {
+userSchema.methods.validatePassword = function(password) {
   return bcrypt.compare(password, this.password);
 };
 
-UserSchema.statics.hashPassword = function(password) {
+userSchema.statics.hashPassword = function(password) {
   return bcrypt.hash(password, 10);
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);*/
 
-module.exports = {User};
+function StorageException(message) {
+   this.message = message;
+   this.name = "StorageException";
+};
+
+const mockUser = {
+  create: function(username, password) {
+    const user = {
+      username: username,
+      password: password
+    };
+    this.users.push(user);
+    return user;
+  },
+  get: function() {
+    return this.users;
+  }
+};
+
+function createUserModel() {
+  const storage = Object.create(mockUser);
+  storage.users = [];
+  return storage;
+};
+
+
+module.exports = {mockUser: createUserModel()};
