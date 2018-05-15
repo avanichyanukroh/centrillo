@@ -1,3 +1,20 @@
+function getDataFromApi(user) {
+
+	const settings = {
+
+		url: "/user-login",
+		type: 'POST',
+		data: JSON.stringify(user),
+		dataType: 'json',
+		contentType: 'application/json; charset= utf-8',
+		success: function(data) {
+			console.log(data);
+		}
+	};
+
+	$.ajax(settings);
+}
+
 function watchSubmit() {
 	$('#signUpForm').submit(function(event) {
 	event.preventDefault();
@@ -6,25 +23,18 @@ function watchSubmit() {
 	const passwordInput = $(this).find('#password');
 	const confirmPasswordInput = $(this).find('#confirmPassword');
 
-	const username = usernameInput.val();
-	const password = passwordInput.val();
+	const usernameValue = usernameInput.val();
+	const passwordValue = passwordInput.val();
 	const confirmPassword = confirmPasswordInput.val();
+	const user = {username: usernameValue, password: passwordValue};
 
-	const settings = {
+	usernameInput.val("");
+	passwordInput.val("");
+	confirmPasswordInput.val("");
 
-		url: "https://circleitmvp.herokuapp.com/user-login",
-		type: 'POST',
-		dataType: 'json',
-		success: function(data) {
-			console.log(data);
-		}
-	};
-
-	$.ajax(settings);
+	getDataFromApi(user);
 
 	});
-
-console.log(username);
 }
 
 $(watchSubmit);
