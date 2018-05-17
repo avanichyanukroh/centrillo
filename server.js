@@ -2,11 +2,12 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const mongoose = require('mongoose');
+const passport = require('passport');
 
-const userLoginRouter = require('./userLoginRouter');
+const userRouter = require('./userLoginRouter');
 
-const PORT = process.env.PORT || 8080;
-const DATABASE_URL = process.env.DATABASE_URL || 'mongodb://localhost';
+const localStrategy = require('./strategies')
+const { PORT, DATABASE_URL } = require('./config');
 
 const app = express();
 app.use(morgan('common'));
@@ -22,7 +23,12 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use('/user-login', userLoginRouter);
+const localAuth = passport.authenticate('local', {session: false});
+passport.use(localStrategy);
+//app.use(passport.initialize());
+//app.use(passport.session());
+
+app.use('/users', userRouter);
 
 app.get('/', function(req, res) {
 

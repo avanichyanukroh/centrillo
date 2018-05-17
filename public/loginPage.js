@@ -2,7 +2,7 @@ function postDataToApi(user, userSignUpCallback) {
 
 	const settings = {
 
-		url: "/user-login",
+		url: "/users/register",
 		type: 'POST',
 		data: JSON.stringify(user),
 		dataType: 'json',
@@ -19,9 +19,9 @@ function watchSignUpSubmit() {
 
 	event.preventDefault();
 
-	const usernameInput = $(this).find('#username');
-	const passwordInput = $(this).find('#password');
-	const confirmPasswordInput = $(this).find('#confirmPassword');
+	const usernameInput = $(this).find('#registerUsername');
+	const passwordInput = $(this).find('#registerPassword');
+	const confirmPasswordInput = $(this).find('#confirmRegisterPassword');
 
 	const usernameValue = usernameInput.val();
 	const passwordValue = passwordInput.val();
@@ -41,15 +41,51 @@ function userSignUpCallback(data) {
 
 	console.log(data);
 	//need callback for error/failed post
-	$('#signUpForm').empty();
-	$('#signUpForm').html(
+	$('#signUpForm').addClass("d-none");
+	$('#signUpUserFeedback').html(
 
 		`
-			<p>Thank you for signing up with Circle.it! Please continue to the <a class="text-info" href="#">login page</a>.<p>
+			<p>Thank you for signing up with Circle.it! Please continue to the <a class="text-info" id="changeToLoginForm2" href="#">login page</a>.<p>
 		`
 		);
+}
 
+function watchChangeToSignUpForm() {
 
+    $('#changeToSignUpForm').click(function() {
+
+    	event.preventDefault();
+
+	    $('#loginForm').addClass("d-none");
+	    $('#signUpForm').removeClass("d-none");
+    });
+}
+
+function watchChangeToLoginForm() {
+
+    $('#changeToLoginForm').click(function() {
+
+    	event.preventDefault();
+
+	    $('#signUpForm').addClass("d-none");
+	    $('#loginForm').removeClass("d-none");
+	    $('signUpUserFeedback').empty();
+    });
+}
+
+function watchChangeToLoginForm2() {
+
+    $('#changeToLoginForm2').click(function() {
+
+    	event.preventDefault();
+
+	    $('#signUpForm').addClass("d-none");
+	    $('#loginForm').removeClass("d-none");
+	    $('signUpUserFeedback').empty();
+    });
 }
 
 $(watchSignUpSubmit);
+$(watchChangeToLoginForm);
+$(watchChangeToSignUpForm);
+$(watchChangeToLoginForm2);
