@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
-
+const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
+mongoose.Promise = global.Promise;
+
 const{User} = require('./models');
+
+router.use(express.json());
 
 router.get('/', (req, res) => {
 
