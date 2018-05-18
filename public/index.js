@@ -21,12 +21,14 @@ function watchNavCollapseToggle() {
     });
 }
 
+//collapse nav bars icon upon selecting 
+
 //changes dropdown arrow icon direction after expanding or collapsing
 function watchArrowToggle() {
 
     $(".arrowToggle").click(function() {
 
-    $(this).toggleClass("fa-angle-down fa-angle-up");
+    $(this).children().toggleClass("fa-angle-down fa-angle-up");
 
     });
 }

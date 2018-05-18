@@ -161,10 +161,11 @@ function displayUserProfile(data) {
             $(`.tasks-${i}`).append(
             `
                 <li>
-
-                    <i class="far fa-circle"></i>
-                    <span class="">${data.taskList[i].tasks[j].taskTitle}</span>
-
+                    <div class="border-bottom">
+                        <i class="far fa-circle"></i>
+                        <span>${data.taskList[i].tasks[j].taskTitle}</span>
+                    </div>
+                   
                     <span class="d-none">
                         <span>${data.taskList[i].tasks[j].taskComplete}</span>
                         <span>${data.taskList[i].tasks[j].dateDue}</span>
