@@ -1,4 +1,4 @@
-function postDataToApi(user, userSignUpCallback) {
+function postRegisterationDataToApi(user, userSignUpCallback) {
 
 	const settings = {
 
@@ -13,7 +13,22 @@ function postDataToApi(user, userSignUpCallback) {
 	$.ajax(settings);
 }
 
-function watchSignUpSubmit() {
+function postLoginDataToApi(user, userLoginCallback) {
+
+	const settings = {
+
+		url: "/users/login",
+		type: 'POST',
+		data: JSON.stringify(user),
+		dataType: 'json',
+		contentType: 'application/json; charset= utf-8',
+		success: userLoginCallback
+	};
+
+	$.ajax(settings);
+}
+
+function watchSignUpFormSubmit() {
 
 	$('#signUpForm').submit(function(event) {
 
@@ -32,7 +47,28 @@ function watchSignUpSubmit() {
 	passwordInput.val("");
 	confirmPasswordInput.val("");
 
-	postDataToApi(user, userSignUpCallback);
+	postRegisterationDataToApi(user, userSignUpCallback);
+
+	});
+}
+
+function watchLoginFormSubmit() {
+
+	$('#loginForm').submit(function(event) {
+
+	event.preventDefault();
+
+	const usernameInput = $(this).find('#loginUsername');
+	const passwordInput = $(this).find('#loginPassword');
+
+	const usernameValue = usernameInput.val();
+	const passwordValue = passwordInput.val();
+	const user = {username: usernameValue, password: passwordValue};
+
+	usernameInput.val("");
+	passwordInput.val("");
+
+	postLoginDataToApi(user, userLoginCallback);
 
 	});
 }
@@ -46,6 +82,19 @@ function userSignUpCallback(data) {
 
 		`
 			<p>Thank you for signing up with Circle.it! Please continue to the <a class="text-info" id="changeToLoginForm2" href="#">login page</a>.<p>
+		`
+		);
+}
+
+function userLoginCallback(data) {
+
+	console.log(data);
+	//need callback for error/failed post
+	$('#signUpForm').addClass("d-none");
+	$('#signUpUserFeedback').html(
+
+		`
+			<p>You are now logging in...<p>
 		`
 		);
 }
@@ -85,7 +134,8 @@ function watchChangeToLoginForm2() {
     });
 }
 
-$(watchSignUpSubmit);
+$(watchSignUpFormSubmit);
+$(watchLoginFormSubmit);
 $(watchChangeToLoginForm);
 $(watchChangeToSignUpForm);
 $(watchChangeToLoginForm2);

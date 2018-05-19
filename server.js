@@ -1,3 +1,4 @@
+'use strict';
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
@@ -24,11 +25,14 @@ app.use(function (req, res, next) {
 });
 
 const localAuth = passport.authenticate('local', {session: false});
+
 passport.use(localStrategy);
-//app.use(passport.initialize());
-//app.use(passport.session());
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/users', userRouter);
+
 
 app.get('/', function(req, res) {
 
@@ -84,4 +88,4 @@ if (require.main === module) {
   runServer(DATABASE_URL).catch(err => console.error(err));
 }
 
-module.exports = {runServer, closeServer };
+module.exports = {runServer, closeServer};

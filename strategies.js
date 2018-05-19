@@ -1,5 +1,6 @@
-'use strict'
+'use strict';
 const { Strategy: LocalStrategy } = require('passport-local');
+
 const {User} = require('./models');
 const {JWT_SECRET} = require('./config');
 //strategy used for authorization of /login endpoint
@@ -37,4 +38,4 @@ let localStrategy = new LocalStrategy(
     }
 );
 
-module.exports = {localStrategy};
+module.exports = localStrategy;
