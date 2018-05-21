@@ -2,15 +2,27 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
-const mongoose = require('mongoose');
 const passport = require('passport');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/usersDB');
+const db = mongoose.connection;
+ 
+db.on('error', function (err) {
+console.log('connection error', err);
+});
+db.once('open', function () {
+console.log('connected.');
+});
+
+const app = express();
+app.use(express.static('public'));
 
 const userRouter = require('./userLoginRouter');
 
 const localStrategy = require('./strategies')
 const { PORT, DATABASE_URL } = require('./config');
 
-const app = express();
 app.use(morgan('common'));
 
 // CORS
@@ -35,11 +47,19 @@ app.use('/users', userRouter);
 
 
 app.get('/', function(req, res) {
+  console.log(req.user);
 
-	res.sendFile(path.join(__dirname, 'public') + '/loginPage.html');
+  res.sendFile(path.join(__dirname, 'public') + '/index.html');
+
+  /*if (req.user) {
+  	res.sendFile(path.join(__dirname, 'public') + '/index.html');
+  }
+
+  else {
+    res.sendFile(path.join(__dirname, 'public') + '/loginPage.html');
+  }*/
 });
 
-app.use(express.static('public'));
 
 // closeServer needs access to a server object, but that only
 // gets created when `runServer` runs, so we declare `server` here

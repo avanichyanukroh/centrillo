@@ -1,5 +1,25 @@
-  
+function getLoginPage() {
 
+  const settings = {
+
+    url: "/users/login",
+    type: 'GET',
+    success: function(data) {
+      console.log(data);
+    }
+  };
+
+  $.ajax(settings);
+}  
+
+function watchLoginButton() {
+  $('#loginButton').click(function() {
+    event.preventDefault();
+
+    window.location.href = '/users/login';
+    //getLoginPage();
+  });
+};
 
   $('.dropdown').on('shown.bs.dropdown', function () {
     let menu = $(this).find('.dropdown-menu');
@@ -48,6 +68,7 @@ function watchCategoryItemDisplay() {
 
 }
 
+$(watchLoginButton);
 $(watchNavCollapseToggle);
 $(watchArrowToggle);
 $(watchCategoryItemDisplay);

@@ -89,6 +89,10 @@ function userSignUpCallback(data) {
 function userLoginCallback(data) {
 
 	console.log(data);
+	localStorage.setItem('user', JSON.stringify(data.user));
+	let user = JSON.parse(localStorage.getItem('user'));
+	console.log(user);
+	window.location.replace("/");
 	//need callback for error/failed post
 	$('#signUpForm').addClass("d-none");
 	$('#signUpUserFeedback').html(

@@ -5,6 +5,21 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
+const path = require('path');
+
+mongoose.connect('mongodb://localhost/usersDB');
+const db = mongoose.connection;
+ 
+db.on('error', function (err) {
+console.log('connection error', err);
+});
+db.once('open', function () {
+console.log('connected.');
+});
+
+const app = express();
+app.use(express.static('public'));
+
 const jsonParser = bodyParser.json();
 const config = require('./config');
 mongoose.Promise = global.Promise;
@@ -25,14 +40,20 @@ const createAuthToken = function(user) {
 
 router.get('/', (req, res) => {
 
-	res.json(userProfile.get());
+  db.Users.find();
+
+});
+
+
+router.get('/login', (req, res) => {
+  console.log('/users/login endpoint hit');
+  res.sendFile(path.join(__dirname, 'public') + '/loginPage.html');
 });
 
 router.post('/login', localAuth, (req, res) => {
 
-	//const authToken = createAuthToken(req.user.serialize()); seralize() is not reconized as a function?
   const authToken = createAuthToken(req.user);
-	res.json({authToken});
+	res.json({'authToken': authToken, 'user': req.user});
 });
 
 router.post('/register', jsonParser, (req, res) => {
@@ -49,7 +70,7 @@ router.post('/register', jsonParser, (req, res) => {
     });
   }
 
-  const stringFields = ['username', 'password', 'firstName', 'lastName'];
+  const stringFields = ['username', 'password'];
   const nonStringField = stringFields.find(
     field => field in req.body && typeof req.body[field] !== 'string'
   );
