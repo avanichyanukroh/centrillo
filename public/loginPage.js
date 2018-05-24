@@ -84,6 +84,7 @@ function userSignUpCallback(data) {
 			<p>Thank you for signing up with Circle.it! Please continue to the <a class="text-info" id="changeToLoginForm2" href="#">login page</a>.<p>
 		`
 		);
+	$(watchChangeToLoginForm2);
 }
 
 function userLoginCallback(data) {
@@ -132,9 +133,8 @@ function watchChangeToLoginForm2() {
 
     	event.preventDefault();
 
-	    $('#signUpForm').addClass("d-none");
 	    $('#loginForm').removeClass("d-none");
-	    $('signUpUserFeedback').empty();
+	    $('#signUpUserFeedback').empty();
     });
 }
 

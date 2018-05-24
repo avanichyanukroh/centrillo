@@ -65,7 +65,39 @@ function watchCategoryItemDisplay() {
   console.log(displaySelectedCategory);
 
   });
+}
 
+function watchAddTaskForm() {
+
+  $('#addTaskForm').submit(function(event) {
+
+  event.preventDefault();
+
+  const taskInput = $(this).find('#taskTitle');
+  const categoryInput = $(this).find('#categoryName');
+  const dateInput = $(this).find('#taskDateDue');
+  const noteInput = $(this).find('#taskNote');
+
+  const taskValue = taskInput.val();
+  const categoryValue = categoryInput.val();
+  const dateInputValue = dateInput.val();
+  const noteInput = noteInput.val();
+  const addTask = {
+    taskTitle: taskValue,
+    category: categoryValue,
+    taskComplete: false,
+    taskDateDue: dateInputValue,
+    taskNote: noteInput,
+    subTasks: []
+  };
+
+  usernameInput.val("");
+  passwordInput.val("");
+  confirmPasswordInput.val("");
+
+  postRegisterationDataToApi(user, userSignUpCallback);
+
+  });
 }
 
 $(watchLoginButton);
