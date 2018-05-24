@@ -228,11 +228,32 @@
 								</button>
 							</div>
 							<div class="modal-body">
-							...
+								<form class="" id="addTaskForm">
+
+							<div class="form-group">
+					            <input type="text" class="form-control" id="TaskTitle" name="taskTitle" placeholder="Task" required="required">
+					        </div>    
+					        <div class="form-group">
+					        	<input type="text" class="form-control" id="category" name="categoryName" placeholder="Category" required="required">
+					        </div>
+					        <div class="form-group">
+					            <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="taskDateDue">
+					        </div>
+					        <div class="form-group">
+					            <input type="text" class="form-control" id="taskNote" name="note" placeholder="note">
+					        </div>
+					        
+
+
+							<div class="form-group text-center pt-3">
+					            <button type="text" class="btn btn-primary btn-lg">Log In</button>
+					        </div>
+					        <div class="hint-text text-info pt-3">Don't have an account? <a class="text-info" id="changeToSignUpForm" href="#"><u>Sign up here</u></a></div>
+					    </form>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Save changes</button>
+								<button type="button" class="btn btn-primary">Add task</button>
 							</div>
 						</div>
 					</div>

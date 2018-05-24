@@ -40,8 +40,18 @@ const createAuthToken = function(user) {
 
 router.get('/', (req, res) => {
 
-  db.Users.find();
-
+  User
+    .find({'username': 'alvin'})
+    .then(users => {
+      res.json({
+        users: users.map(
+          (user) => user)
+      })
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
 });
 
 

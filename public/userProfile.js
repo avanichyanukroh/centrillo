@@ -14,12 +14,12 @@ function getUserProfileFromApi(displayUserProfile) {
 // this function stays the same when we connect
 // to real API later
 function displayUserProfile(data) {
-
+    console.log(data);
     //display username
    $("#username").append(
     `
 
-        ${data.username}
+        ${data.users[0].username}
 
     `
     );
@@ -104,5 +104,5 @@ function displayUserProfile(data) {
 
 //  on page load do this
 $(function() {
-	getUserProfileFromApi();
+	getUserProfileFromApi(displayUserProfile);
 });
