@@ -37,7 +37,7 @@
 									<a class="dropdown-item border-bottom border-white" href="#">
 
 
-									<h5>Hello!</h5>
+									<h5 class="pb-1">Hello!</h5>
 									<i class="fas fa-user"></i>
 									&nbsp;
 									<span id="username"></span>
@@ -230,33 +230,31 @@
 							<div class="modal-body">
 								<form class="" id="addTaskForm">
 
-							<div class="form-group">
-					            <input type="text" class="form-control" id="TaskTitle" name="taskTitle" placeholder="Task" required="required">
-					        </div>    
-					        <div class="form-group">
-					        	<input type="text" class="form-control" id="category" name="categoryName" placeholder="Category" required="required">
-					        </div>
-					        <div class="form-group">
-					            <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="taskDateDue">
-					        </div>
-					        <div class="form-group">
-					            <input type="text" class="form-control" id="taskNote" name="note" placeholder="note">
-					        </div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-								<button type="submit" class="btn btn-primary">Add task</button>
-							</div>					        
-
-					    </form>
+									<div class="form-group">
+							            <input type="text" class="form-control" id="taskTitle" name="taskTitle" placeholder="Task" required="required">
+							        </div>    
+							        <div class="form-group">
+							        	<input type="text" class="form-control" id="category" name="categoryName" placeholder="Category" required="required">
+							        </div>
+							        <div class="form-group">
+							            <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="taskDateDue" required="required">
+							        </div>
+							        <div class="form-group">
+							            <input type="text" class="form-control" id="taskNote" name="note" placeholder="Note">
+							        </div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Add task</button>
+									</div>					        
+						    	</form>
 							</div>
-
 						</div>
 					</div>
 				</div>
 
 				<!-- main content (tasks rendered here) -->
 				<div class="col-md-8 bg-white p-4" id="mainContent"></div>
-				
+
 			</div>
 		</div>
 
@@ -267,3 +265,4 @@
 		<script src="userProfile.js"></script>
 	</body>
 </html>
+

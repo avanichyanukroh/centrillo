@@ -17,3 +17,12 @@ header {
     left: auto; 
 }
 
+.fa-sticky-note {
+
+	opacity: 0.4;
+}
+
+.fa-edit {
+
+	opacity: 0.6;
+}

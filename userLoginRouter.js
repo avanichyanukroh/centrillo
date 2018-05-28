@@ -41,7 +41,43 @@ const createAuthToken = function(user) {
 router.get('/', (req, res) => {
 
   User
-    .find({'username': 'alvin'})
+    .find({"username": "alvin"})
+    .then(users => {
+      res.json({
+        users: users.map(
+          (user) => user)
+      })
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
+//finds and returns category list for nav bar
+router.get('/categoryList', (req, res) => {
+
+  const categoryList = [];
+  User
+    .find({"username": "alvin"})
+    .then(users => {
+      res.json({
+        users: users.map(
+          (user) => user)
+      })
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
+//find all tasks with specific object
+router.get('/categoryList', (req, res) => {
+
+  const categoryList = [];
+  User
+    .find({"username": "alvin"})
     .then(users => {
       res.json({
         users: users.map(
@@ -109,51 +145,86 @@ router.post('/register', jsonParser, (req, res) => {
 		});
 });
 
-/*router.put('/:id', jsonParser, (req, res) => {
-  const requiredFields = ['id', 'task'];
-  for (let i=0; i<requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`
-      console.error(message);
-      return res.status(400).send(message);
-    }
-  }
-  if (req.params.id !== req.body.id) {
-    const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
-    console.error(message);
-    return res.status(400).send(message);
-  }
-  console.log(`Adding user task \`${req.params.id}\``);
-  User.update({
-    id: req.params.id,
-    task: req.body.task
-  });
-  res.status(204).end();
-});*/
+router.put('/addTask', (req, res) => {
 
-/*db.users.findByIdAndUpdate('5b0609c10d73500facb79f6d', { $set: { task:
-    {
-      "taskTitle": "Go to ralphs",
+  User.findOneAndUpdate(
+    { "username" : "alvin" },
+    {$push: 
+      { "tasks":
+        {
+        "taskTitle": req.body.taskTitle,
+        "category": req.body.category,
+        "taskComplete": false,
+        "taskDateDue": req.body.taskDateDue,
+        "taskNote": req.body.taskNote,
+        "subTasks": []
+        }
+      }
+    },
+    function (error, success) {
+          if (error) {
+              console.log(error);
+          } else {
+              console.log(success);
+          }
+    }
+  )
+  res.status(204);
+});
+
+
+
+router.put('/editTask', (req, res) => {
+
+  User.findOne(
+    { "username" : "alvin" },
+    {$set: 
+      { "tasks" + "." + req.body._id:
+        {
+        "taskTitle": req.body.taskTitle,
+        "category": req.body.category,
+        "taskComplete": false,
+        "taskDateDue": req.body.taskDateDue,
+        "taskNote": req.body.taskNote,
+        "subTasks": []
+        }
+      }
+    },
+    function (error, success) {
+          if (error) {
+              console.log(error);
+          } else {
+              console.log(success);
+          }
+    }
+  )
+  res.status(204);
+});
+
+/*
+db.users.find()
+db.users.find({"username": "alvin"}, {task: 1})
+
+db.users.find({"task.category":"Groceries"})
+
+db.users.deleteOne({"_id":"5b0609c10d73500facb79f6d"})
+
+db.users.findOneAndUpdate({ "username" : "alvin" },{$push: 
+  { "task": {
+      "taskTitle": "Go to Vons",
       "category": "Groceries",
       "taskComplete": false,
       "taskDateDue": "Date",
       "taskNote": "by work",
       "subTasks": [{
-        "subTaskTitle": "get apples",
+        "subTaskTitle": "buy apples",
         "subTaskComplete": false,
-        "subTaskDateDue": "Date",
-        "subTaskNote": "red"
+        "subTaskDateDue": "Date2",
+        "subTaskNote": "green"
       }]
-    }
- }}, { new: true }, function (err, user) {
-  if (err) return handleError(err);
-  res.send(user);
-});
+    }}})
 
-
-
- db.users.find({"username": "alvin"})*/
+*/
 
 
 
