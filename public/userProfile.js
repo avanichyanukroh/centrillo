@@ -1,7 +1,8 @@
 //Global Variables
 let CATEGORYLIST = [];
-let CATEGORYMAP = [];
+let CATEGORYMAP = {};
 let USERPROFILE;
+let SELECTEDCATEGORY;
 
 let currentDateAndTime = new Date($.now());
 
@@ -9,11 +10,15 @@ console.log(currentDateAndTime);
 
 
 function getUserProfileFromApi(displayUserProfile) {
-
+    let username = JSON.parse(localStorage.getItem('user'));
+    let user = {username: username}
     const settings = {
 
         url: "/users",
-        type: 'GET',
+        type: 'POST',
+        data: JSON.stringify(user),
+        dataType: 'json',
+        contentType: 'application/json; charset= utf-8',
         success: function(data) {
 
             USERPROFILE = data;
@@ -40,13 +45,31 @@ function updateTaskToApi(addTask) {
   $.ajax(settings);
 }
 
+function editTaskToApi(editTask) {
+
+  const settings = {
+
+    url: "/users/editTask",
+    type: 'PUT',
+    data: JSON.stringify(editTask),
+    dataType: 'json',
+    contentType: 'application/json; charset= utf-8',
+    success: function(data){console.log(data)}
+  };
+
+  $.ajax(settings);
+}
+
 //initial display after logging in, should land on Today's filter first
 function displayUserProfile(data) {
     
+    $("#categories, #categories-m").empty();
+    CATEGORYMAP = {};
+    CATEGORYLIST = [];
     console.log(data);
 
     //navbar category filter
-    data.users[0].tasks.forEach(obj => {
+    data.tasks.forEach(obj => {
     console.log(obj.category);
       if (!(obj.category in CATEGORYMAP)) {
         CATEGORYMAP[obj.category] = 1;
@@ -54,7 +77,6 @@ function displayUserProfile(data) {
       }
       
     });
-    console.log(CATEGORYLIST);
 
     for (let i = 0; i < CATEGORYLIST.length; i ++) {
         $("#categories, #categories-m").append(
@@ -74,7 +96,7 @@ function displayUserProfile(data) {
    $("#username").append(
     `
 
-        ${data.users[0].username}
+        ${data.username}
 
     `
     );
@@ -103,7 +125,8 @@ function watchAddTaskForm() {
     category: categoryValue,
     taskComplete: false,
     taskDateDue: dateInputValue,
-    taskNote: noteInputValue
+    taskNote: noteInputValue,
+    username: JSON.parse(localStorage.getItem('user'))
   };
 
   taskInput.val("");
@@ -115,6 +138,57 @@ function watchAddTaskForm() {
 
   updateTaskToApi(addTask);
 
+  $('#addModal').modal('hide');
+
+  getUserProfileFromApi(displayUserProfile);
+
+  displayCategoryAndTask(SELECTEDCATEGORY);
+
+  });
+}
+
+function watchEditTaskForm() {
+
+  $('.editTaskForm').submit(function(event) {
+
+  event.preventDefault();
+
+  let form = event.target; 
+  let currentId = form.getAttribute('id');
+  console.log(currentId);
+
+  const taskInput = $(this).find('#editTaskTitle-' + currentId);
+  const categoryInput = $(this).find('#editCategory-' + currentId);
+  const dateInput = $(this).find('#editTaskDateDue-' + currentId);
+  const noteInput = $(this).find('#editTaskNote-' + currentId);
+
+  const taskValue = taskInput.val();
+  const categoryValue = categoryInput.val();
+  const dateInputValue = dateInput.val();
+  const noteInputValue = noteInput.val();
+
+  const editTask = {
+    taskTitle: taskValue,
+    category: categoryValue,
+    taskComplete: false,
+    taskDateDue: dateInputValue,
+    taskNote: noteInputValue,
+    _id: currentId,
+    username: JSON.parse(localStorage.getItem('user'))
+  };
+
+  taskInput.val("");
+  categoryInput.val("");
+  dateInput.val("");
+  noteInput.val("");
+
+  console.log(editTask);
+
+  editTaskToApi(editTask);
+  $('#editTaskModal-' + currentId).modal('hide');
+  $('#title-' + currentId).text(taskValue);
+
+  getUserProfileFromApi(displayUserProfile);
   });
 }
 
@@ -123,18 +197,32 @@ function watchTaskCompleteToggle() {
     $(".taskCompleteToggle").click(function() {
 
         $(this).toggleClass("fa-circle fa-check-circle");
+        $(this).parent().children('span').toggleClass("strikeThrough");
 
     })
 
 };
+
+
 
 function watchCategoryItemDisplay() {
   $(".list-group-item").click(function() {
     event.preventDefault();
 
     let selectedCategory = $(this).attr("value");
+    SELECTEDCATEGORY = selectedCategory;
 
     console.log(selectedCategory);
+
+    displayCategoryAndTask(selectedCategory);
+
+    });
+            $(watchTaskCompleteToggle);
+            $(watchEditTaskForm);
+
+};
+
+function displayCategoryAndTask(selectedCategory) {
 
     $('#mainContent').empty();
 
@@ -147,17 +235,19 @@ function watchCategoryItemDisplay() {
                 `
     );
 
-    for (let i = 0; i < USERPROFILE.users[0].tasks.length; i ++) {
+    for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
 
-        if (USERPROFILE.users[0].tasks[i].category === selectedCategory) {
+        if (USERPROFILE.tasks[i].category === selectedCategory) {
 
             $('#tasks').append(
                 `
                 <ul class="list-unstyled">
                     <li>
                         <div class="m-0 p-0">
+                            <span>
                             <i class="far fa-circle fa-lg pr-2 taskCompleteToggle" id="taskCompleteToggle-${i}"></i>
-                            <span>${USERPROFILE.users[0].tasks[i].taskTitle}</span>
+                            <span class="" id="title-${USERPROFILE.tasks[i]._id}">${USERPROFILE.tasks[i].taskTitle}</span>
+                            </span>
                             <i class="far fa-sticky-note ml-2" type="button" data-toggle="modal" data-target="#noteModal-${i}"></i>
 
                             <i class="far fa-edit float-right" id="taskDropDownMenu" id="dropdownMenuButton" aria-hidden="true" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
@@ -165,7 +255,7 @@ function watchCategoryItemDisplay() {
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                 
-                                <a class="dropdown-item border-bottom border-white" id="editTask" data-toggle="modal" data-target="#editTaskModal-${i}" href="#">
+                                <a class="dropdown-item border-bottom border-white" id="editTask" data-toggle="modal" data-target="#editTaskModal-${USERPROFILE.tasks[i]._id}" href="#">
                                     <i class="fas fa-pencil-alt"></i>
                                     &nbsp;
                                     Edit task
@@ -188,8 +278,8 @@ function watchCategoryItemDisplay() {
                         </div>
                        <hr>
                         <span class="d-none">
-                            <span>${USERPROFILE.users[0].tasks[i].taskComplete}</span>
-                            <span>${USERPROFILE.users[0].tasks[i].taskDateDue}</span>
+                            <span>${USERPROFILE.tasks[i].taskComplete}</span>
+                            <span>${USERPROFILE.tasks[i].taskDateDue}</span>
                         </span>
                         <div id="subTasks"></div>
                     </li>
@@ -205,13 +295,13 @@ function watchCategoryItemDisplay() {
                                 </button>
                             </div>
                             <div class="modal-body m-2">
-                                <span>${USERPROFILE.users[0].tasks[i].taskNote}</span>
+                                <span>${USERPROFILE.tasks[i].taskNote}</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="modal fade" id="editTaskModal-${i}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal fade" id="editTaskModal-${USERPROFILE.tasks[i]._id}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -221,23 +311,23 @@ function watchCategoryItemDisplay() {
                                 </button>
                             </div>
                             <div class="modal-body m-2">
-                                <form class="" id="editTaskForm-${i}">
+                                <form class="editTaskForm" id="${USERPROFILE.tasks[i]._id}">
 
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="editTaskTitle" name="editTaskTitle" value="${USERPROFILE.users[0].tasks[i].taskTitle}" required="required">
+                                        <input type="text" class="form-control" id="editTaskTitle-${USERPROFILE.tasks[i]._id}" name="editTaskTitle" value="${USERPROFILE.tasks[i].taskTitle}" required="required">
                                     </div>    
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="editCategory" name="editTategoryName" value="${USERPROFILE.users[0].tasks[i].category}" required="required">
+                                        <input type="text" class="form-control" id="editCategory-${USERPROFILE.tasks[i]._id}" name="editTategoryName" value="${USERPROFILE.tasks[i].category}" required="required">
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" type="datetime-local" value="${USERPROFILE.users[0].tasks[i].taskDateDue}" id="editTaskDateDue" required="required">
+                                        <input class="form-control" type="datetime-local" id="editTaskDateDue-${USERPROFILE.tasks[i]._id}" value="${USERPROFILE.tasks[i].taskDateDue}"  required="required">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="editTaskNote" name="editNote" value="${USERPROFILE.users[0].tasks[i].taskNote}">
+                                        <input type="text" class="form-control" id="editTaskNote-${USERPROFILE.tasks[i]._id}" name="editNote" value="${USERPROFILE.tasks[i].taskNote}">
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save task</button>
+                                        <button type="submit" class="btn btn-primary formSubmit" id="editSubmit">Save task</button>
                                     </div>                          
                                 </form>
                             </div>
@@ -249,33 +339,28 @@ function watchCategoryItemDisplay() {
 
             );
 
-            $(watchTaskCompleteToggle);
 
-            for (let j = 0; j < USERPROFILE.users[0].tasks[i].subTasks.length; j ++) {
+
+            for (let j = 0; j < USERPROFILE.tasks[i].subTasks.length; j ++) {
 
                 $('#subTasks').append(
                     `
                         <ul class="list-unstyled">
                             <li>
                                 <i class="far fa-circle pl-3"></i>
-                                <span class="">${USERPROFILE.users[0].tasks[0].subTasks[j].subTaskTitle}</span>
+                                <span class="">${USERPROFILE.tasks[0].subTasks[j].subTaskTitle}</span>
 
                                 <span class="d-none">
-                                    <span>${USERPROFILE.users[0].tasks[0].subTasks[j].subTaskComplete}</span>
-                                    <span>${USERPROFILE.users[0].tasks[0].subTasks[j].subTaskDateDue}</span>
-                                    <span>${USERPROFILE.users[0].tasks[0].subTasks[j].subTaskNote}</span>
+                                    <span>${USERPROFILE.tasks[0].subTasks[j].subTaskComplete}</span>
+                                    <span>${USERPROFILE.tasks[0].subTasks[j].subTaskDateDue}</span>
+                                    <span>${USERPROFILE.tasks[0].subTasks[j].subTaskNote}</span>
                                 </span>
                             </li>
                         </ul>
                     `
             )}
         }
-
     }
-
-  });
-
-
 };
 
 /*function watchLoginButton() {
@@ -289,11 +374,19 @@ function watchCategoryItemDisplay() {
 };*/
 
 
-  //on page load do this
+  //on page load, if not logged in, redirect to login page.
 $(function() {
+
+    console.log(localStorage.getItem("user"));
+
+    if (localStorage.getItem("user") === null) {
+    window.location.replace("/users/login");
+    }
+
+    else {
 	getUserProfileFromApi(displayUserProfile);
+    };
 });
 
 $(watchAddTaskForm);
 $(watchCategoryItemDisplay);
-$(watchTaskCompleteToggle);

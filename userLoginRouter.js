@@ -38,58 +38,18 @@ const createAuthToken = function(user) {
   });
 };
 
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
 
   User
-    .find({"username": "alvin"})
-    .then(users => {
-      res.json({
-        users: users.map(
-          (user) => user)
-      })
+    .findOne({"username": req.body.username})
+    .then(user => {
+      res.json(user)
     })
     .catch(err => {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
     });
 });
-
-//finds and returns category list for nav bar
-router.get('/categoryList', (req, res) => {
-
-  const categoryList = [];
-  User
-    .find({"username": "alvin"})
-    .then(users => {
-      res.json({
-        users: users.map(
-          (user) => user)
-      })
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ message: 'Internal server error' });
-    });
-});
-
-//find all tasks with specific object
-router.get('/categoryList', (req, res) => {
-
-  const categoryList = [];
-  User
-    .find({"username": "alvin"})
-    .then(users => {
-      res.json({
-        users: users.map(
-          (user) => user)
-      })
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ message: 'Internal server error' });
-    });
-});
-
 
 router.get('/login', (req, res) => {
   console.log('/users/login endpoint hit');
@@ -148,7 +108,7 @@ router.post('/register', jsonParser, (req, res) => {
 router.put('/addTask', (req, res) => {
 
   User.findOneAndUpdate(
-    { "username" : "alvin" },
+    { "username" : req.body.username },
     {$push: 
       { "tasks":
         {
@@ -174,12 +134,24 @@ router.put('/addTask', (req, res) => {
 
 
 
-router.put('/editTask', (req, res) => {
+router.put('/editTask', jsonParser, (req, res) => {
+  console.log(req.body.taskTitle);
+  User
+    .findOne(
+    { "username" : req.body.username })
+    .then(user => {
+      console.log(user.tasks.id(req.body._id));
+      let task = user.tasks.id(req.body._id).remove();
+      user.save();
 
-  User.findOne(
-    { "username" : "alvin" },
-    {$set: 
-      { "tasks" + "." + req.body._id:
+      console.log(user.tasks.id(req.body._id));
+      console.log(user);
+    });
+  User
+    .findOneAndUpdate(
+    { "username" : req.body.username },
+    {$push: 
+      { "tasks":
         {
         "taskTitle": req.body.taskTitle,
         "category": req.body.category,
@@ -189,15 +161,12 @@ router.put('/editTask', (req, res) => {
         "subTasks": []
         }
       }
-    },
-    function (error, success) {
-          if (error) {
-              console.log(error);
-          } else {
-              console.log(success);
-          }
     }
-  )
+    )
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
   res.status(204);
 });
 

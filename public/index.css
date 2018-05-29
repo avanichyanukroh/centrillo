@@ -26,3 +26,8 @@ header {
 
 	opacity: 0.6;
 }
+
+.strikeThrough {
+
+	text-decoration: line-through;
+}

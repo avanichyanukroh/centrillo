@@ -12,14 +12,15 @@ function getLoginPage() {
   $.ajax(settings);
 }
 
-function watchLoginButton() {
+function watchlogOutButton() {
 
-  $('#loginButton').click(function() {
+  $('#logOutButton').click(function() {
     
     event.preventDefault();
 
+    localStorage.removeItem('user');
+
     window.location.href = '/users/login';
-    //getLoginPage();
   });
 };
 
@@ -57,6 +58,6 @@ function watchArrowToggle() {
 
 
 
-$(watchLoginButton);
+$(watchlogOutButton);
 $(watchNavCollapseToggle);
 $(watchArrowToggle);
