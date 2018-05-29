@@ -23,6 +23,9 @@ function getUserProfileFromApi(displayUserProfile) {
 
             USERPROFILE = data;
             displayUserProfile(data);
+            if(SELECTEDCATEGORY) {
+            displayCategoryAndTask(SELECTEDCATEGORY);
+            };
         }
     };
 
@@ -141,8 +144,6 @@ function watchAddTaskForm() {
   $('#addModal').modal('hide');
 
   getUserProfileFromApi(displayUserProfile);
-
-  displayCategoryAndTask(SELECTEDCATEGORY);
 
   });
 }
