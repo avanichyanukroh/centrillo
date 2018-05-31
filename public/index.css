@@ -1,0 +1,33 @@
+header {
+
+	color: #fff;
+	font-family: 'Roboto', sans-serif;
+}
+
+.navbar {
+
+	margin: 0;
+	padding: 0;
+}
+
+/* Fixes cog dropdown-menu to drop to the left instead of right (off the screen)*/
+.dropdown-menu {
+
+    right: 0; 
+    left: auto; 
+}
+
+.fa-sticky-note {
+
+	opacity: 0.4;
+}
+
+.fa-edit {
+
+	opacity: 0.6;
+}
+
+.strikeThrough {
+
+	text-decoration: line-through;
+}

@@ -1,9 +1,268 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-<p>Hello world</p>
-</body>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/yeti/bootstrap.min.css" rel="stylesheet" integrity="sha384-yAYSLJjzniZh9Kau9E1v1ma5CzvyHF8fPK/xUpaRx1XTH9r60WxzDivvHG3xm6Hn" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.11/css/all.css" integrity="sha384-p2jx59pefphTFIpeqCcISO9MdVfIm4pNnsL08A6v5vaQc4owkQqxMV8kg4Yvhaw/" crossorigin="anonymous">
+		<link href="index.css" rel="stylesheet" type="text/css">
+		<title>Circle.it</title>
+	</head>
+	<body class="bg-secondary">
+		<header class="bg-primary sticky-top shadow">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12">
+
+						<!-- cog dropdown menu -->
+						<nav class="navbar">
+							<h1 class="d-none d-md-block h2 pt-2">Circle.it</h1>
+
+							<!-- bars icon for mobile viewport (collapse) drop down menu -->
+							<i class="fa far fa-bars fa-lg navbar-toggler float-left d-md-none mt-2 pb-2" id="navCollapse" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation"></i>
+							
+							<div class="dropdown">
+
+							<!-- add icon -->
+							<i class="fas fa-plus-circle fa-lg mr-4 btn-primary" id="addTaskButton" type="button" data-toggle="modal" data-target="#addModal"></i>
+
+							
+
+							<!-- cog icon -->
+							<i class="fa fa-cog fa-lg mt-2" id="dropdownMenuButton" aria-hidden="true" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+
+								<!-- cog dropdown item -->
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+									<a class="dropdown-item border-bottom border-white" href="#">
+
+
+									<h5 class="pb-1">Hello!</h5>
+									<i class="fas fa-user"></i>
+									&nbsp;
+									<span id="username"></span>
+									</a>
+
+									<a class="dropdown-item" href="#">
+										<i class="fas fa-cog"></i>
+										&nbsp;
+										Settings
+									</a>
+
+									<a class="dropdown-item" id="logOutButton" href="#">
+										<i class="fas fa-sign-out-alt"></i>
+										&nbsp;
+										Log out
+									</a>
+
+								</div>
+							</div>
+						</nav>
+					</div>
+				</div>
+
+				<!-- collapsed menu for bars icon -->	
+				<div class="collapse" id="navbarToggleExternalContent">
+					<div class="bg-light p-3 mb-3 mt-3">
+					<div class="collapseOnSelect">
+						<a class="list-group-item pl-4 border-0 bg-light" href="#">
+							<i class="far fa-calendar fa-lg"></i>
+							&nbsp;
+							Today
+							&nbsp;
+							<span class="badge badge-info badge-pill">14</span>
+						</a>
+					</div>
+					<div class="collapseOnSelect">
+						<a class="list-group-item pl-4 border-0 bg-light" href="#">
+							<i class="far fa-calendar-alt fa-lg"></i>
+							&nbsp;
+							Next 7 days
+							&nbsp;
+							<span class="badge badge-info badge-pill">14</span>
+						</a>
+					</div>
+					<div class="collapseOnSelect">
+						<a class="list-group-item pl-4 border-0 bg-light" href="#">
+							<i class="far fa-clipboard fa-lg"></i>
+							&nbsp;
+							Overview
+							&nbsp;
+							<span class="badge badge-info badge-pill">14</span>
+						</a>
+					</div>
+						<div class="accordion" id="accordion">
+							<div class="list-group">
+
+								<a href="#" class="list-group-item bg-light border-0" data-toggle="collapse" data-target="#collapse-sm-1" aria-expanded="true" aria-controls="collapse-sm-1">
+									<i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+									&nbsp;
+									Categories
+								</a>
+
+								<div id="collapse-sm-1" class="collapse border-top" data-parent="#accordion">
+
+									<!-- categories item list (mobile)-->
+									<div class="list-group collapseOnSelect" id="categories-m"></div>
+
+								</div>
+							</div>
+							<div>
+
+								<a href="#" class="list-group-item bg-light border-0" data-toggle="collapse" data-target="#collapse-sm-2" aria-expanded="true" aria-controls="collapse-sm-2">
+									<i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+									&nbsp;
+									Filters
+								</a>
+
+								<div id="collapse-sm-2" class="collapse border-top" data-parent="#accordion">
+
+									<!-- filters item list (mobile)-->
+									<div class="list-group collapseOnSelect">
+
+										<a class="list-group-item pl-5 bg-light border-0" href="#">
+											<i class="fas fa-circle fa-xs text-info"></i>
+											&nbsp;
+											Filter 1
+										</a>
+
+										<a class="list-group-item pl-5 bg-light border-0" href="#">
+											<i class="fas fa-circle fa-xs text-info"></i>
+											&nbsp;
+											Filter 2
+										</a>
+
+									</div>
+								</div>
+							</div>							
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<!-- side bar nav (non-mobile device)-->
+		<div class="container">
+			<div class="row">
+				<div class="col-4 bg-secondary d-none d-md-block">
+
+					<a class="list-group-item pl-4 border-0 bg-light" href="#">
+						<i class="far fa-calendar fa-lg"></i>
+						&nbsp;
+						Today
+						&nbsp;
+						<span class="badge badge-info badge-pill">2</span>
+					</a>
+
+					<a class="list-group-item pl-4 border-0 bg-light" href="#">
+						<i class="far fa-calendar-alt fa-lg"></i>
+						&nbsp;
+						Next 7 days
+						&nbsp;
+						<span class="badge badge-info badge-pill">6</span>
+					</a>
+
+					<a class="list-group-item pl-4 border-0 bg-light" href="#">
+						<i class="far fa-clipboard fa-lg"></i>
+						&nbsp;
+						Overview
+						&nbsp;
+						<span class="badge badge-info badge-pill">14</span>
+					</a>
+
+					<div class="accordion" id="accordion">
+						<div class="list-group">
+
+							<a href="#" class="list-group-item bg-light border-0 arrowToggle" data-toggle="collapse" data-target="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+								<i class="fa fas fa-angle-up fa-lg" aria-hidden="true"></i>
+								&nbsp;
+								Categories
+							</a>
+
+							<div id="collapse-1" class="collapse show" data-parent="#accordion">
+
+								<!-- categories item list (non-mobile)-->
+								<div class="list-group" id="categories"></div>
+
+							</div>
+						</div>
+						<div class="list-group">
+
+							<a href="#" class="list-group-item bg-light border-0 arrowToggle" data-toggle="collapse" data-target="#collapse-2" aria-expanded="true" aria-controls="collapse-2">
+								<i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+								&nbsp;
+								Filters
+							</a>
+
+							<div id="collapse-2" class="collapse border-top" data-parent="#accordion">
+
+								<!-- filters item list (non-mobile)-->
+								<div class="list-group">
+
+									<a class="list-group-item pl-5 bg-light border-0" href="#">
+										<i class="fas fa-circle fa-xs text-info"></i>
+										&nbsp;
+										Filter 1
+									</a>
+
+									<a class="list-group-item pl-5 bg-light border-0" href="#">
+										<i class="fas fa-circle fa-xs text-info"></i>
+										&nbsp;
+										Filter 2
+									</a>
+
+								</div>
+							</div>
+						</div>							
+					</div>
+				</div>
+
+				<!-- (Modal) pop-up form to add task, linked to add icon -->
+				<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="addModalLabel">Add task</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form class="" id="addTaskForm">
+
+									<div class="form-group">
+							            <input type="text" class="form-control" id="taskTitle" name="taskTitle" placeholder="Task" required="required">
+							        </div>    
+							        <div class="form-group">
+							        	<input type="text" class="form-control" id="category" name="categoryName" placeholder="Category" required="required">
+							        </div>
+							        <div class="form-group">
+							            <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="taskDateDue" required="required">
+							        </div>
+							        <div class="form-group">
+							            <input type="text" class="form-control" id="taskNote" name="note" placeholder="Note">
+							        </div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary formSubmit" id="addSubmit">Add task</button>
+									</div>					        
+						    	</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- main content (tasks rendered here) -->
+				<div class="col-md-8 bg-white p-4" id="mainContent"></div>
+
+			</div>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+		<script src="index.js"></script>
+		<script src="userProfile.js"></script>
+	</body>
 </html>
+
