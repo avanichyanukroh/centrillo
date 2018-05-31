@@ -219,11 +219,16 @@ function watchCategoryItemDisplay() {
 
     });
             $(watchTaskCompleteToggle);
-            $(watchEditTaskForm);
+            
 
 };
 
 function displayCategoryAndTask(selectedCategory) {
+
+    USERPROFILE.tasks(function(a,b) {
+      
+      return new Date(b.taskDateDue) - new Date(a.taskDateDue);
+    });
 
     $('#mainContent').empty();
 
@@ -362,6 +367,7 @@ function displayCategoryAndTask(selectedCategory) {
             )}
         }
     }
+    $(watchEditTaskForm);
 };
 
 /*function watchLoginButton() {
