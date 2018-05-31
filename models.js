@@ -14,12 +14,12 @@ const userSchema = mongoose.Schema({
     taskTitle: String,
     category: String,
     taskComplete: Boolean,
-    taskDateDue: Date,
+    taskDateDue: String,
     taskNote: String,
     subTasks: [{
       subTaskTitle: String,
       subTaskComplete: Boolean,
-      subTaskDateDue: Date,
+      subTaskDateDue: String,
       subTaskNote: String
     }]
   }]

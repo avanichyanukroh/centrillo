@@ -5,6 +5,7 @@ let USERPROFILE;
 let SELECTEDCATEGORY;
 
 let currentDateAndTime = new Date($.now());
+$('#dateTimeDue')
 
 console.log(currentDateAndTime);
 
@@ -134,6 +135,7 @@ function watchAddTaskForm() {
   dateInput.val("");
   noteInput.val("");
 
+  console.log(dateInputValue);
   console.log(addTask);
 
   updateTaskToApi(addTask);
@@ -390,3 +392,10 @@ $(function() {
 
 $(watchAddTaskForm);
 $(watchCategoryItemDisplay);
+
+
+/*array.sort(function(a,b){
+  // Turn your strings into dates, and then subtract them
+  // to get a value that is either negative, positive, or zero.
+  return new Date(b.date) - new Date(a.date);
+});*/
