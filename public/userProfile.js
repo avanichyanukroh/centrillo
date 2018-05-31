@@ -225,10 +225,11 @@ function watchCategoryItemDisplay() {
 
 function displayCategoryAndTask(selectedCategory) {
 
-    USERPROFILE.tasks(function(a,b) {
+    /*USERPROFILE.tasks.sort(function(a,b) {
       
-      return new Date(b.taskDateDue) - new Date(a.taskDateDue);
-    });
+      return new Date(a.taskDateDue) - new Date(b.taskDateDue);
+    });*/
+    
 
     $('#mainContent').empty();
 
@@ -245,6 +246,8 @@ function displayCategoryAndTask(selectedCategory) {
 
         if (USERPROFILE.tasks[i].category === selectedCategory) {
 
+            let newDate = new Date(USERPROFILE.tasks[i].taskDateDue);
+            
             $('#tasks').append(
                 `
                 <ul class="list-unstyled">
@@ -258,6 +261,7 @@ function displayCategoryAndTask(selectedCategory) {
 
                             <i class="far fa-edit float-right" id="taskDropDownMenu" id="dropdownMenuButton" aria-hidden="true" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 
+                            <span class="pr-2 font-weight-light float-right">${newDate.toLocaleString()}</span>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                 
