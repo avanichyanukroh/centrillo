@@ -19,7 +19,7 @@
 							<h1 class="d-none d-md-block h2 pt-2">Circle.it</h1>
 
 							<!-- bars icon for mobile viewport (collapse) drop down menu -->
-							<i class="fa far fa-bars fa-lg navbar-toggler float-left d-md-none mt-2 pb-2" id="navCollapse" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation"></i>
+							<i class="fa far fa-bars fa-lg navbar-toggler float-left d-md-none mt-2 pb-2 collapseOnSelect" id="navCollapse" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation"></i>
 							
 							<div class="dropdown">
 
@@ -64,7 +64,9 @@
 				<!-- collapsed menu for bars icon -->	
 				<div class="collapse" id="navbarToggleExternalContent">
 					<div class="bg-light p-3 mb-3 mt-3">
-					<div class="collapseOnSelect">
+					<!--
+					<div>
+						
 						<a class="list-group-item pl-4 border-0 bg-light" href="#">
 							<i class="far fa-calendar fa-lg"></i>
 							&nbsp;
@@ -73,72 +75,45 @@
 							<span class="badge badge-info badge-pill">14</span>
 						</a>
 					</div>
-					<div class="collapseOnSelect">
-						<a class="list-group-item pl-4 border-0 bg-light" href="#">
-							<i class="far fa-calendar-alt fa-lg"></i>
-							&nbsp;
-							Next 7 days
-							&nbsp;
-							<span class="badge badge-info badge-pill">14</span>
-						</a>
-					</div>
-					<div class="collapseOnSelect">
-						<a class="list-group-item pl-4 border-0 bg-light" href="#">
-							<i class="far fa-clipboard fa-lg"></i>
-							&nbsp;
-							Overview
-							&nbsp;
-							<span class="badge badge-info badge-pill">14</span>
-						</a>
-					</div>
-						<div class="accordion" id="accordion">
-							<div class="list-group">
+						<div>
+							<a class="list-group-item pl-4 border-0 bg-light" href="#">
+								<i class="far fa-calendar-alt fa-lg"></i>
+								&nbsp;
+								Next 7 days
+								&nbsp;
+								<span class="badge badge-info badge-pill">14</span>
+							</a>
+						</div>
+							-->
+						<div>
+							<a class="list-group-item pl-4 border-0 bg-light" href="#" value="Overview">
+								<i class="far fa-clipboard fa-lg"></i>
+								&nbsp;
+								Overview
+								&nbsp;
+								<span class="badge badge-info badge-pill"><span class="overviewCount"></span></span>
+							</a>
+						</div>
+							<div class="accordion" id="accordion">
+								<div class="list-group">
 
-								<a href="#" class="list-group-item bg-light border-0" data-toggle="collapse" data-target="#collapse-sm-1" aria-expanded="true" aria-controls="collapse-sm-1">
-									<i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
-									&nbsp;
-									Categories
-								</a>
+									<a href="#" class="list-group-item bg-light border-0 arrowToggle" data-toggle="collapse" data-target="#collapse-sm-1" aria-expanded="true" aria-controls="collapse-sm-1">
+										<i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+										&nbsp;
+										Categories
+									</a>
 
-								<div id="collapse-sm-1" class="collapse border-top" data-parent="#accordion">
+									<div id="collapse-sm-1" class="collapse border-top" data-parent="#accordion">
 
-									<!-- categories item list (mobile)-->
-									<div class="list-group collapseOnSelect" id="categories-m"></div>
-
-								</div>
-							</div>
-							<div>
-
-								<a href="#" class="list-group-item bg-light border-0" data-toggle="collapse" data-target="#collapse-sm-2" aria-expanded="true" aria-controls="collapse-sm-2">
-									<i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
-									&nbsp;
-									Filters
-								</a>
-
-								<div id="collapse-sm-2" class="collapse border-top" data-parent="#accordion">
-
-									<!-- filters item list (mobile)-->
-									<div class="list-group collapseOnSelect">
-
-										<a class="list-group-item pl-5 bg-light border-0" href="#">
-											<i class="fas fa-circle fa-xs text-info"></i>
-											&nbsp;
-											Filter 1
-										</a>
-
-										<a class="list-group-item pl-5 bg-light border-0" href="#">
-											<i class="fas fa-circle fa-xs text-info"></i>
-											&nbsp;
-											Filter 2
-										</a>
+										<!-- categories item list (mobile)-->
+										<div class="list-group" id="categories-m"></div>
 
 									</div>
 								</div>
-							</div>							
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 		</header>
 
 		<!-- side bar nav (non-mobile device)-->
@@ -146,6 +121,7 @@
 			<div class="row">
 				<div class="col-4 bg-secondary d-none d-md-block">
 
+					<!--
 					<a class="list-group-item pl-4 border-0 bg-light" href="#">
 						<i class="far fa-calendar fa-lg"></i>
 						&nbsp;
@@ -161,13 +137,14 @@
 						&nbsp;
 						<span class="badge badge-info badge-pill">6</span>
 					</a>
+					-->
 
-					<a class="list-group-item pl-4 border-0 bg-light" href="#">
+					<a class="list-group-item pl-4 border-0 bg-light" href="#" value="Overview">
 						<i class="far fa-clipboard fa-lg"></i>
 						&nbsp;
 						Overview
 						&nbsp;
-						<span class="badge badge-info badge-pill">14</span>
+						<span class="badge badge-info badge-pill"><span class="overviewCount"></span></span>
 					</a>
 
 					<div class="accordion" id="accordion">
@@ -186,39 +163,12 @@
 
 							</div>
 						</div>
-						<div class="list-group">
-
-							<a href="#" class="list-group-item bg-light border-0 arrowToggle" data-toggle="collapse" data-target="#collapse-2" aria-expanded="true" aria-controls="collapse-2">
-								<i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
-								&nbsp;
-								Filters
-							</a>
-
-							<div id="collapse-2" class="collapse border-top" data-parent="#accordion">
-
-								<!-- filters item list (non-mobile)-->
-								<div class="list-group">
-
-									<a class="list-group-item pl-5 bg-light border-0" href="#">
-										<i class="fas fa-circle fa-xs text-info"></i>
-										&nbsp;
-										Filter 1
-									</a>
-
-									<a class="list-group-item pl-5 bg-light border-0" href="#">
-										<i class="fas fa-circle fa-xs text-info"></i>
-										&nbsp;
-										Filter 2
-									</a>
-
-								</div>
-							</div>
-						</div>							
+							
 					</div>
 				</div>
 
 				<!-- (Modal) pop-up form to add task, linked to add icon -->
-				<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+				<div class="modal" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">

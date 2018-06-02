@@ -120,15 +120,14 @@ router.put('/addTask', (req, res) => {
         "subTasks": []
         }
       }
-    },
-    function (error, success) {
-          if (error) {
-              console.log(error);
-          } else {
-              console.log(success);
-          }
     }
   )
+  .then(user => {
+      res.json(user)})
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
   res.status(204);
 });
 
@@ -144,8 +143,6 @@ router.put('/editTask', jsonParser, (req, res) => {
       let task = user.tasks.id(req.body._id).remove();
       user.save();
 
-      console.log(user.tasks.id(req.body._id));
-      console.log(user);
     });
   User
     .findOneAndUpdate(
@@ -163,6 +160,8 @@ router.put('/editTask', jsonParser, (req, res) => {
       }
     }
     )
+    .then(user => {
+      res.json(user)})
     .catch(err => {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
@@ -170,6 +169,23 @@ router.put('/editTask', jsonParser, (req, res) => {
   res.status(204);
 });
 
+
+router.delete('/deleteTask', jsonParser, (req, res) => {
+  User
+    .findOne(
+    { "username" : req.body.username })
+    .then(user => {
+
+      let task = user.tasks.id(req.body._id).remove();
+      user.save();
+
+      res.status(204);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+});
 /*
 db.users.find()
 db.users.find({"username": "alvin"}, {task: 1})

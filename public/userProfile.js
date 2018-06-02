@@ -20,7 +20,8 @@ function getUserProfileFromApi(displayUserProfile) {
         dataType: 'json',
         contentType: 'application/json; charset= utf-8',
         success: function(data) {
-
+            console.log('got new userprofile');
+            $('.modal').modal('hide');
             USERPROFILE = data;
             displayUserProfile(data);
             if(SELECTEDCATEGORY) {
@@ -42,7 +43,12 @@ function updateTaskToApi(addTask) {
     data: JSON.stringify(addTask),
     dataType: 'json',
     contentType: 'application/json; charset= utf-8',
-    success: function(data){console.log(data)}
+    success: function(data) {
+
+      console.log(data);
+      getUserProfileFromApi(displayUserProfile);
+
+    }
   };
 
   $.ajax(settings);
@@ -57,7 +63,32 @@ function editTaskToApi(editTask) {
     data: JSON.stringify(editTask),
     dataType: 'json',
     contentType: 'application/json; charset= utf-8',
-    success: function(data){console.log(data)}
+    success: function(data) {
+
+      console.log(data);
+      getUserProfileFromApi(displayUserProfile);
+
+    }
+  };
+
+  $.ajax(settings);
+}
+
+function deleteTaskToApi(deleteTask) {
+
+  const settings = {
+
+    url: "/users/deleteTask",
+    type: 'DELETE',
+    data: JSON.stringify(deleteTask),
+    dataType: 'json',
+    contentType: 'application/json; charset= utf-8',
+    success: function(data) {
+
+      console.log(data);
+      getUserProfileFromApi(displayUserProfile);
+
+    }
   };
 
   $.ajax(settings);
@@ -75,14 +106,16 @@ function displayUserProfile(data) {
     data.tasks.forEach(obj => {
     console.log(obj.category);
       if (!(obj.category in CATEGORYMAP)) {
+
         CATEGORYMAP[obj.category] = 1;
-      CATEGORYLIST.push(obj.category)
-      }
-      
+
+        CATEGORYLIST.push(obj.category);
+      };
     });
 
+    $('.overviewCount').text(`${USERPROFILE.tasks.length}`)
     for (let i = 0; i < CATEGORYLIST.length; i ++) {
-        $("#categories, #categories-m").append(
+        $('#categories, #categories-m').append(
         `
 
             <a class="list-group-item pl-5 bg-light border-0" id="navCategory-${i}" value="${CATEGORYLIST[i]}" href="#">
@@ -139,11 +172,10 @@ function watchAddTaskForm() {
 
   console.log(addTask);
 
-  updateTaskToApi(addTask);
-
   $('#addModal').modal('hide');
 
-  getUserProfileFromApi(displayUserProfile);
+  updateTaskToApi(addTask);
+
 
   });
 }
@@ -185,17 +217,46 @@ function watchEditTaskForm() {
 
   console.log(editTask);
 
-  editTaskToApi(editTask);
   $('#editTaskModal-' + currentId).modal('hide');
+
+  editTaskToApi(editTask);
+
   $('#title-' + currentId).text(taskValue);
 
-  getUserProfileFromApi(displayUserProfile);
+
+  });
+}
+
+function watchDeleteTaskForm() {
+
+  $('.deleteTaskForm').submit(function(event) {
+
+  event.preventDefault();
+
+  let form = event.target; 
+  let currentId = form.getAttribute('id');
+  console.log(currentId);
+  let idArray = currentId.split("-");
+  let taskId = idArray[1];
+
+
+  const deleteTask = {
+    _id: taskId,
+    username: JSON.parse(localStorage.getItem('user'))
+  };
+
+  console.log(deleteTask);
+
+  $('#deleteTaskModal-' + taskId).modal('hide');
+
+  deleteTaskToApi(deleteTask);
+
   });
 }
 
 function watchTaskCompleteToggle() {
 
-    $(".taskCompleteToggle").click(function() {
+    $('.taskCompleteToggle').click(function() {
 
         $(this).toggleClass("fa-circle fa-check-circle");
         $(this).parent().children('span').toggleClass("strikeThrough");
@@ -215,12 +276,14 @@ function watchCategoryItemDisplay() {
 
     console.log(selectedCategory);
 
-    displayCategoryAndTask(selectedCategory);
+      //$('#navbarToggleExternalContent').collapse();
 
-    });
-            $(watchTaskCompleteToggle);
-            
+    if (!(selectedCategory === undefined)) {
 
+      displayCategoryAndTask(selectedCategory);
+    }
+
+  });
 };
 
 function displayCategoryAndTask(selectedCategory) {
@@ -230,7 +293,7 @@ function displayCategoryAndTask(selectedCategory) {
       return new Date(a.taskDateDue) - new Date(b.taskDateDue);
     });*/
     
-
+    console.log(selectedCategory);
     $('#mainContent').empty();
 
     $('#mainContent').append(
@@ -242,12 +305,11 @@ function displayCategoryAndTask(selectedCategory) {
                 `
     );
 
-    for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
+          function displaySelectedCategory(i) {
 
-        if (USERPROFILE.tasks[i].category === selectedCategory) {
 
             let newDate = new Date(USERPROFILE.tasks[i].taskDateDue);
-            
+
             $('#tasks').append(
                 `
                 <ul class="list-unstyled">
@@ -255,29 +317,29 @@ function displayCategoryAndTask(selectedCategory) {
                         <div class="m-0 p-0">
                             <span>
                             <i class="far fa-circle fa-lg pr-2 taskCompleteToggle" id="taskCompleteToggle-${i}"></i>
-                            <span class="" id="title-${USERPROFILE.tasks[i]._id}">${USERPROFILE.tasks[i].taskTitle}</span>
+                            <span class="taskTitle" id="title-${USERPROFILE.tasks[i]._id}">${USERPROFILE.tasks[i].taskTitle}</span>
                             </span>
                             <i class="far fa-sticky-note ml-2" type="button" data-toggle="modal" data-target="#noteModal-${i}"></i>
 
                             <i class="far fa-edit float-right" id="taskDropDownMenu" id="dropdownMenuButton" aria-hidden="true" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 
-                            <span class="pr-2 font-weight-light float-right">${newDate.toLocaleString()}</span>
+                            <span class="pr-2 font-weight-light float-right newDateFontSize">${newDate.toLocaleString()}</span>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                 
-                                <a class="dropdown-item border-bottom border-white" id="editTask" data-toggle="modal" data-target="#editTaskModal-${USERPROFILE.tasks[i]._id}" href="#">
+                                <a class="dropdown-item border-bottom border-white" data-toggle="modal" data-target="#editTaskModal-${USERPROFILE.tasks[i]._id}" href="#">
                                     <i class="fas fa-pencil-alt"></i>
                                     &nbsp;
                                     Edit task
                                 </a>
 
-                                <a class="dropdown-item" id="createSubTask" href="#">
+                                <a class="dropdown-item d-none" id="createSubTask" href="#">
                                     <i class="fas fa-plus"></i>
                                     &nbsp;
                                     Create subtask
                                 </a>
 
-                                <a class="dropdown-item" id="deleteTask" href="#">
+                                <a class="dropdown-item" id="deleteTask" data-toggle="modal" data-target="#deleteTaskModal-${USERPROFILE.tasks[i]._id}" href="#">
                                     <i class="fas fa-minus-circle"></i>
                                     &nbsp;
                                     Delete task
@@ -295,7 +357,7 @@ function displayCategoryAndTask(selectedCategory) {
                     </li>
                 </ul>
 
-                <div class="modal fade" id="noteModal-${i}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal" id="noteModal-${i}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -311,7 +373,7 @@ function displayCategoryAndTask(selectedCategory) {
                     </div>
                 </div>
 
-                <div class="modal fade" id="editTaskModal-${USERPROFILE.tasks[i]._id}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal" id="editTaskModal-${USERPROFILE.tasks[i]._id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -345,34 +407,60 @@ function displayCategoryAndTask(selectedCategory) {
                     </div>
                 </div>
 
+                <div class="modal" id="deleteTaskModal-${USERPROFILE.tasks[i]._id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h5 class="modal-title">Are you sure you want to delete "${USERPROFILE.tasks[i].taskTitle}"</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body m-2">
+                                <form class="deleteTaskForm" id="delete-${USERPROFILE.tasks[i]._id}">
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary formSubmit" id="deleteSubmit">Delete</button>
+                                    </div>                          
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 `
 
             );
+      };
 
+  if (selectedCategory === "Overview") {
 
+    for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
 
-            for (let j = 0; j < USERPROFILE.tasks[i].subTasks.length; j ++) {
+      displaySelectedCategory(i);
 
-                $('#subTasks').append(
-                    `
-                        <ul class="list-unstyled">
-                            <li>
-                                <i class="far fa-circle pl-3"></i>
-                                <span class="">${USERPROFILE.tasks[0].subTasks[j].subTaskTitle}</span>
-
-                                <span class="d-none">
-                                    <span>${USERPROFILE.tasks[0].subTasks[j].subTaskComplete}</span>
-                                    <span>${USERPROFILE.tasks[0].subTasks[j].subTaskDateDue}</span>
-                                    <span>${USERPROFILE.tasks[0].subTasks[j].subTaskNote}</span>
-                                </span>
-                            </li>
-                        </ul>
-                    `
-            )}
-        }
     }
+  };
+
+  if (!(selectedCategory === "Overview")) {
+    for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
+
+        if (USERPROFILE.tasks[i].category === selectedCategory) {
+
+          displaySelectedCategory(i);
+
+        };
+    }
+  }
     $(watchEditTaskForm);
+    $(watchDeleteTaskForm);
+    $(watchTaskCompleteToggle);
 };
+
+//updateMainContentPageAfterEdit(editTask) {}
 
 /*function watchLoginButton() {
 
