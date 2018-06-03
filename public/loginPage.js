@@ -81,9 +81,9 @@ function userSignUpCallback(data) {
 	$('#signUpUserFeedback').html(
 
 		`
-			<p>Thank you for signing up with Circle.it! Please continue to the <a class="text-info" id="changeToLoginForm2" href="#">login page</a>.<p>
+		<h4 class="feedbackText">Thank you for signing up with Circle.it! Please continue to the <a class="text-info" id="changeToLoginForm2" href="#">login page</a>.<h4>
 		`
-		);
+	);
 	$(watchChangeToLoginForm2);
 }
 
@@ -97,9 +97,9 @@ function userLoginCallback(data) {
 	$('#signUpUserFeedback').html(
 
 		`
-			<p>You are now logging in...<p>
+		<p>You are now logging in...<p>
 		`
-		);
+	);
 }
 
 function watchChangeToSignUpForm() {

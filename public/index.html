@@ -9,13 +9,13 @@
 		<title>Circle.it</title>
 	</head>
 	<body class="bg-secondary">
-		<header class="bg-primary sticky-top shadow">
+		<header class="bg-primary sticky-top shadow" role="banner">
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-12">
 
 						<!-- cog dropdown menu -->
-						<nav class="navbar">
+						<nav class="navbar" role="navigation">
 							<h1 class="d-none d-md-block h2 pt-2">Circle.it</h1>
 
 							<!-- bars icon for mobile viewport (collapse) drop down menu -->
@@ -43,12 +43,6 @@
 									<span id="username"></span>
 									</a>
 
-									<a class="dropdown-item" href="#">
-										<i class="fas fa-cog"></i>
-										&nbsp;
-										Settings
-									</a>
-
 									<a class="dropdown-item" id="logOutButton" href="#">
 										<i class="fas fa-sign-out-alt"></i>
 										&nbsp;
@@ -64,27 +58,6 @@
 				<!-- collapsed menu for bars icon -->	
 				<div class="collapse" id="navbarToggleExternalContent">
 					<div class="bg-light p-3 mb-3 mt-3">
-					<!--
-					<div>
-						
-						<a class="list-group-item pl-4 border-0 bg-light" href="#">
-							<i class="far fa-calendar fa-lg"></i>
-							&nbsp;
-							Today
-							&nbsp;
-							<span class="badge badge-info badge-pill">14</span>
-						</a>
-					</div>
-						<div>
-							<a class="list-group-item pl-4 border-0 bg-light" href="#">
-								<i class="far fa-calendar-alt fa-lg"></i>
-								&nbsp;
-								Next 7 days
-								&nbsp;
-								<span class="badge badge-info badge-pill">14</span>
-							</a>
-						</div>
-							-->
 						<div>
 							<a class="list-group-item pl-4 border-0 bg-light" href="#" value="Overview">
 								<i class="far fa-clipboard fa-lg"></i>
@@ -94,51 +67,32 @@
 								<span class="badge badge-info badge-pill"><span class="overviewCount"></span></span>
 							</a>
 						</div>
-							<div class="accordion" id="accordion">
-								<div class="list-group">
+						<div class="accordion" id="accordion">
+							<div class="list-group">
 
-									<a href="#" class="list-group-item bg-light border-0 arrowToggle" data-toggle="collapse" data-target="#collapse-sm-1" aria-expanded="true" aria-controls="collapse-sm-1">
-										<i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
-										&nbsp;
-										Categories
-									</a>
+								<a href="#" class="list-group-item bg-light border-0 arrowToggle" data-toggle="collapse" data-target="#collapse-sm-1" aria-expanded="true" aria-controls="collapse-sm-1">
+									<i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+									&nbsp;
+									Categories
+								</a>
 
-									<div id="collapse-sm-1" class="collapse border-top" data-parent="#accordion">
+								<div id="collapse-sm-1" class="collapse border-top" data-parent="#accordion">
 
-										<!-- categories item list (mobile)-->
-										<div class="list-group" id="categories-m"></div>
+									<!-- categories item list (mobile)-->
+									<div class="list-group" id="categories-m"></div>
 
-									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
 		</header>
 
 		<!-- side bar nav (non-mobile device)-->
 		<div class="container">
 			<div class="row">
 				<div class="col-4 bg-secondary d-none d-md-block">
-
-					<!--
-					<a class="list-group-item pl-4 border-0 bg-light" href="#">
-						<i class="far fa-calendar fa-lg"></i>
-						&nbsp;
-						Today
-						&nbsp;
-						<span class="badge badge-info badge-pill">2</span>
-					</a>
-
-					<a class="list-group-item pl-4 border-0 bg-light" href="#">
-						<i class="far fa-calendar-alt fa-lg"></i>
-						&nbsp;
-						Next 7 days
-						&nbsp;
-						<span class="badge badge-info badge-pill">6</span>
-					</a>
-					-->
-
 					<a class="list-group-item pl-4 border-0 bg-light" href="#" value="Overview">
 						<i class="far fa-clipboard fa-lg"></i>
 						&nbsp;
@@ -162,48 +116,14 @@
 								<div class="list-group" id="categories"></div>
 
 							</div>
-						</div>
-							
+						</div>	
 					</div>
 				</div>
-
-				<!-- (Modal) pop-up form to add task, linked to add icon -->
-				<div class="modal" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="addModalLabel">Add task</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<form class="" id="addTaskForm">
-
-									<div class="form-group">
-							            <input type="text" class="form-control" id="taskTitle" name="taskTitle" placeholder="Task" required="required">
-							        </div>    
-							        <div class="form-group">
-							        	<input type="text" class="form-control" id="category" name="categoryName" placeholder="Category" required="required">
-							        </div>
-							        <div class="form-group">
-							            <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="taskDateDue" required="required">
-							        </div>
-							        <div class="form-group">
-							            <input type="text" class="form-control" id="taskNote" name="note" placeholder="Note">
-							        </div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-primary formSubmit" id="addSubmit">Add task</button>
-									</div>					        
-						    	</form>
-							</div>
-						</div>
-					</div>
-				</div>
+				
+				<div id="addTaskModal"></div>
 
 				<!-- main content (tasks rendered here) -->
-				<div class="col-md-8 bg-white p-4" id="mainContent"></div>
+				<div class="col-md-8 bg-white p-4" id="mainContent" aria-live="polite"></div>
 
 			</div>
 		</div>
