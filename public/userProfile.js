@@ -134,7 +134,20 @@ function displayUserProfile(data) {
     };
   });
 
-  $('.overviewCount').text(`${USERPROFILE.tasks.length}`)
+  $('#overview').empty();
+  $('#overview').append(
+    `
+    <a class="list-group-item pl-4 border-0 bg-light" href="#" value="Overview">
+      <i class="far fa-clipboard fa-lg"></i>
+      &nbsp;
+      Overview
+      &nbsp;
+      <span class="badge badge-info badge-pill"><span class="overviewCount"></span></span>
+    </a>
+    `
+
+    );
+  $('.overviewCount').text(`${USERPROFILE.tasks.length}`);
   for (let i = 0; i < CATEGORYLIST.length; i ++) {
       $('#categories, #categories-m').append(
       `
@@ -308,7 +321,7 @@ function watchTaskCompleteToggle() {
           _id: taskId,
           username: JSON.parse(localStorage.getItem('user'))
         };
-
+        console.log(editTask);
         editTaskToggleToApi(editTask);
     });
 };
@@ -380,9 +393,6 @@ function displaySelectedCategory(i) {
 
   let date = dateTimeArray[0] + ", ";
   let time = dateTimeArray[1].slice(0,5) + dateTimeArray[1].slice(8,11);
-
-  console.log(date);
-  console.log(time);
 
   let taskHTML =  `
         <ul class="list-unstyled">
