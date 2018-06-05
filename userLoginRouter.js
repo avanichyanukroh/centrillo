@@ -36,7 +36,7 @@ router.post('/', (req, res) => {
   User
     .findOne({"username": req.body.username})
     .then(user => {
-      res.json(user)
+      res.status(200).json(user)
     })
     .catch(err => {
       console.error(err);

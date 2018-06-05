@@ -51,13 +51,6 @@ app.get('/', function(req, res) {
 
   res.sendFile(path.join(__dirname, 'public') + '/index.html');
 
-  /*if (req.user) {
-  	res.sendFile(path.join(__dirname, 'public') + '/index.html');
-  }
-
-  else {
-    res.sendFile(path.join(__dirname, 'public') + '/loginPage.html');
-  }*/
 });
 
 
@@ -108,4 +101,4 @@ if (require.main === module) {
   runServer(DATABASE_URL).catch(err => console.error(err));
 }
 
-module.exports = {runServer, closeServer};
+module.exports = {runServer, app, closeServer};
