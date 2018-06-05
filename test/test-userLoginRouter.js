@@ -1,3 +1,4 @@
+'use strict';
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -33,9 +34,7 @@ function tearDownDb() {
 // and then we insert that data into mongo
 function seedUserData() {
   console.info('seeding User data');
-  const seedData = [];
-  
-    seedData.push({
+  let seedData = {
 
       username: "dummy",
       password: "dummy123",
@@ -47,9 +46,9 @@ function seedUserData() {
         taskNote: "a note",
         subTasks: []
       }]
-    });
+    };
   // this will return a promise
-  return User.insertOne(seedData);
+  return User.create(seedData);
 }
 
 
@@ -76,7 +75,7 @@ describe('Users API resource', function () {
 
 describe('POST endpoint', function () {
 
-    it('should return all existing users', function () {
+    it('should return one user', function () {
 
       let res;
       return chai.request(router)
@@ -111,6 +110,21 @@ describe('POST endpoint', function () {
             user.should.be.a('object');
             user.should.include.keys('id', 'username', 'password', 'tasks');
           });
+        });
+    });
+  });
+
+/*
+describe('GET endpoint', function () {
+
+    it('should return login page', function () {
+
+      let res;
+      return chai.request(router)
+        .get('/users/login')
+        .then(_res => {
+          res = _res;
+          res.should.have.status(304);
         });
     });
   });
@@ -168,5 +182,5 @@ describe('DELETE endpoint', function () {
           should.not.exist(_task);
         });
     });
-  });
+  });*/
 });
