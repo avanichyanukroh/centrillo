@@ -7,9 +7,6 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-mongoose.connect('mongodb://localhost/usersDB');
-
-
 const app = express();
 app.use(express.static('public'));
 
@@ -32,10 +29,11 @@ const createAuthToken = function(user) {
 };
 
 router.post('/', (req, res) => {
-
+  console.log(`body: ${req.body.username}`);
   User
     .findOne({"username": req.body.username})
     .then(user => {
+      console.log(`user: ${user}`);
       res.status(200).json(user)
     })
     .catch(err => {
