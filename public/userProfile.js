@@ -4,6 +4,7 @@ let CATEGORYMAP = {};
 let USERPROFILE;
 let SELECTEDCATEGORY;
 let CURRENTDATEANDTIME;
+let CURRENTDATE;
 
 
 function getUserProfileFromApi(displayUserProfile) {
@@ -21,16 +22,7 @@ function getUserProfileFromApi(displayUserProfile) {
             $('#mainContent').empty();
             $('.modal').modal('hide');
 
-            //defaults date and time to current date and time and sets to min as well
-            let createCurrentDateAndTime = new Date();
-            let currentDate = createCurrentDateAndTime.toISOString().slice(0, 10);
-            let currentTime = createCurrentDateAndTime.toISOString().slice(10, 16);
-            let currentDateAndTime = currentDate + currentTime;
-
-            CURRENTDATEANDTIME = currentDateAndTime;
-
-            $('#taskDateDue').attr("min",currentDateAndTime);
-            $('#taskDateDue').attr("value",currentDateAndTime);
+            createDateAndTime();
 
             USERPROFILE = data;
             displayUserProfile(data);
@@ -116,6 +108,40 @@ function editTaskToggleToApi(editTask) {
   $.ajax(settings);
 }
 
+function createDateAndTime() {
+
+  //defaults date and time to current date and time and sets to min as well
+  let createCurrentDateAndTime = new Date();
+  let currentDate = createCurrentDateAndTime.toISOString().slice(0, 10);
+  let currentTime = createCurrentDateAndTime.toISOString().slice(10, 16);
+  let currentDateAndTime = currentDate + currentTime;
+
+  currentDay = parseInt(currentDate.slice(8, 10));
+
+  next7Days = [];
+  
+  for (i = 0; i < 7; i ++) {
+
+    let nextDay = currentDay + i;
+
+    if (nextDay < 10 ) {
+
+      next7Days.push(currentDate.slice(0, 8) + "0" + nextDay.toString());
+    }
+    else {
+      next7Days.push(currentDate.slice(0, 8) + nextDay.toString());
+    }
+  }
+
+  console.log(next7Days);
+  CURRENTDATE = currentDate;
+  CURRENTDATEANDTIME = currentDateAndTime;
+
+  $('#taskDateDue').attr("min",currentDateAndTime);
+  $('#taskDateDue').attr("value",currentDateAndTime);
+
+};
+
 //initial display after logging in, should land on Today's filter first
 function displayUserProfile(data) {
     
@@ -134,8 +160,42 @@ function displayUserProfile(data) {
     };
   });
 
-  $('#overview').empty();
-  $('#overview').append(
+$('#today, #today-m').empty();
+  $('#today, #today-m').append(
+    `
+    <a class="list-group-item pl-4 border-0 bg-light" href="#" value="Today">
+      <i class="far fa-calendar fa-lg"></i>
+      &nbsp;
+      Today
+      &nbsp;
+      <span class="badge badge-info badge-pill"><span class="todayCount"></span></span>
+    </a>
+    `
+
+    );
+
+  $('.todayCount').text(`${USERPROFILE.tasks.length}`);
+
+  $('#7Days, #7Days-m').empty();
+  $('#7Days, #7Days-m').append(
+    `
+    <a class="list-group-item pl-4 border-0 bg-light" href="#" value="Next 7 days">
+      <i class="far fa-calendar-alt fa-lg"></i>
+      &nbsp;
+      Next 7 days
+      &nbsp;
+      <span class="badge badge-info badge-pill"><span class="7DayCount"></span></span>
+    </a>
+    `
+
+    );
+
+  $('.7DayCount').text(`${USERPROFILE.tasks.length}`);
+
+
+
+  $('#overview, #overview-m').empty();
+  $('#overview, #overview-m').append(
     `
     <a class="list-group-item pl-4 border-0 bg-light" href="#" value="Overview">
       <i class="far fa-clipboard fa-lg"></i>
@@ -147,8 +207,11 @@ function displayUserProfile(data) {
     `
 
     );
+
   $('.overviewCount').text(`${USERPROFILE.tasks.length}`);
+
   for (let i = 0; i < CATEGORYLIST.length; i ++) {
+
       $('#categories, #categories-m').append(
       `
 
@@ -345,37 +408,60 @@ function watchCategoryItemDisplay() {
 
 function displayCategoryAndTask(selectedCategory) {
 
-    USERPROFILE.tasks.sort(function(a,b) {
-      
-      return new Date(a.taskDateDue) - new Date(b.taskDateDue);
-    });
+  USERPROFILE.tasks.sort(function(a,b) {
     
+    return new Date(a.taskDateDue) - new Date(b.taskDateDue);
+  });
+  
 
-    $('#mainContent').append(
-      `
-      <div class="allTaskList m-3">
-          <h3 class="pt-2 pb-1 font-weight-bold">${selectedCategory}</h3>
-          <div id="tasks"></div>
-      </div>
-      `
-    );
+  $('#mainContent').append(
+    `
+    <div class="allTaskList m-3">
+        <h3 class="pt-2 pb-1 font-weight-bold">${selectedCategory}</h3>
+        <div id="tasks"></div>
+    </div>
+    `
+  );
+
+  if (selectedCategory === "Today")  {
+
+    for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
+
+      if (CURRENTDATE == USERPROFILE.tasks[i].taskDateDue.slice(0, 10)) {
+
+        displaySelectedCategory(i);
+
+      };
+    }
+  }
+
+  if (selectedCategory === "Next 7 days")  {
+
+    for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
+
+      if (CURRENTDATE == USERPROFILE.tasks[i].taskDateDue.slice(0, 10)) {
+
+        displaySelectedCategory(i);
+
+      };
+    }
+  }
 
   if (selectedCategory === "Overview") {
 
     for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
 
       displaySelectedCategory(i);
-
     }
   };
 
-  if (!(selectedCategory === "Overview")) {
+  if (!(selectedCategory === "Overview" || "Today" || "Next 7 days")) {
+
     for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
 
       if (USERPROFILE.tasks[i].category === selectedCategory) {
 
         displaySelectedCategory(i);
-
       };
     }
   }
@@ -392,7 +478,7 @@ function displaySelectedCategory(i) {
   let dateTimeArray = newDate.toLocaleString().split(",");
 
   let date = dateTimeArray[0] + ", ";
-  let time = dateTimeArray[1].slice(0,5) + dateTimeArray[1].slice(8,11);
+  let time = dateTimeArray[1].slice(0,5) + dateTimeArray[1].slice(8,12);
 
   let taskHTML =  `
         <ul class="list-unstyled">
