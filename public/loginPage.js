@@ -22,7 +22,8 @@ function postLoginDataToApi(user, userLoginCallback) {
 		data: JSON.stringify(user),
 		dataType: 'json',
 		contentType: 'application/json; charset= utf-8',
-		success: userLoginCallback
+		success: userLoginCallback,
+		error: function() {$('#loginErrorFeedback').text(`Incorrect username and password`)}
 	};
 
 	$.ajax(settings);

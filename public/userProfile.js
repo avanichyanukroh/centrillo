@@ -5,6 +5,8 @@ let USERPROFILE;
 let SELECTEDCATEGORY;
 let CURRENTDATEANDTIME;
 let CURRENTDATE;
+let NEXT7DAYS;
+let DUPLICATETASKID;
 
 
 function getUserProfileFromApi(displayUserProfile) {
@@ -128,18 +130,19 @@ function createDateAndTime() {
 
       next7Days.push(currentDate.slice(0, 8) + "0" + nextDay.toString());
     }
+
     else {
+
       next7Days.push(currentDate.slice(0, 8) + nextDay.toString());
     }
-  }
+  };
 
-  console.log(next7Days);
+  NEXT7DAYS = next7Days;
   CURRENTDATE = currentDate;
   CURRENTDATEANDTIME = currentDateAndTime;
 
   $('#taskDateDue').attr("min",currentDateAndTime);
   $('#taskDateDue').attr("value",currentDateAndTime);
-
 };
 
 //initial display after logging in, should land on Today's filter first
@@ -157,6 +160,7 @@ function displayUserProfile(data) {
       CATEGORYMAP[obj.category] = 1;
 
       CATEGORYLIST.push(obj.category);
+      CATEGORYLIST.sort();
     };
   });
 
@@ -187,7 +191,6 @@ $('#today, #today-m').empty();
       <span class="badge badge-info badge-pill"><span class="7DayCount"></span></span>
     </a>
     `
-
     );
 
   $('.7DayCount').text(`${USERPROFILE.tasks.length}`);
@@ -205,7 +208,6 @@ $('#today, #today-m').empty();
       <span class="badge badge-info badge-pill"><span class="overviewCount"></span></span>
     </a>
     `
-
     );
 
   $('.overviewCount').text(`${USERPROFILE.tasks.length}`);
@@ -341,8 +343,6 @@ function watchEditTaskForm() {
   editTaskToApi(editTask);
 
   $('#title-' + currentId).text(taskValue);
-
-
   });
 }
 
@@ -356,7 +356,6 @@ function watchDeleteTaskForm() {
   let currentId = form.getAttribute('id');
   let idArray = currentId.split("-");
   let taskId = idArray[1];
-
 
   const deleteTask = {
     _id: taskId,
@@ -380,33 +379,47 @@ function watchTaskCompleteToggle() {
         let idArray = currentId.split("-");
         let taskId = idArray[1];
 
-        const editTask = {
-          _id: taskId,
-          username: JSON.parse(localStorage.getItem('user'))
+        if (!(taskId == DUPLICATETASKID)) {
+          const editTask = {
+            _id: taskId,
+            username: JSON.parse(localStorage.getItem('user'))
+          };
+          console.log(editTask);
+
+          editTaskToggleToApi(editTask);
+
+          let DUPLICATETASKID = taskId;
         };
-        console.log(editTask);
-        editTaskToggleToApi(editTask);
     });
 };
 
 
 
 function watchCategoryItemDisplay() {
+
   $(".list-group-item").click(function() {
+
     event.preventDefault();
 
     let selectedCategory = $(this).attr("value");
+
     SELECTEDCATEGORY = selectedCategory;
 
     if (!(selectedCategory === undefined)) {
+
       $('#mainContent').empty();
+
       displayCategoryAndTask(selectedCategory);
     }
-
   });
 };
 
 function displayCategoryAndTask(selectedCategory) {
+
+  USERPROFILE.tasks.sort(function(a,b) {
+    
+    return a.taskTitle - b.taskTitle;
+  });
 
   USERPROFILE.tasks.sort(function(a,b) {
     
@@ -430,7 +443,6 @@ function displayCategoryAndTask(selectedCategory) {
       if (CURRENTDATE == USERPROFILE.tasks[i].taskDateDue.slice(0, 10)) {
 
         displaySelectedCategory(i);
-
       };
     }
   }
@@ -439,11 +451,13 @@ function displayCategoryAndTask(selectedCategory) {
 
     for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
 
-      if (CURRENTDATE == USERPROFILE.tasks[i].taskDateDue.slice(0, 10)) {
+      for (let j = 0; j < NEXT7DAYS.length; j ++) {
 
-        displaySelectedCategory(i);
+        if (USERPROFILE.tasks[i].taskDateDue.slice(0, 10) == NEXT7DAYS[j]) {
 
-      };
+          displaySelectedCategory(i);
+        };
+      }
     }
   }
 
@@ -453,9 +467,9 @@ function displayCategoryAndTask(selectedCategory) {
 
       displaySelectedCategory(i);
     }
-  };
+  }
 
-  if (!(selectedCategory === "Overview" || "Today" || "Next 7 days")) {
+  if (!(selectedCategory === "Overview" || selectedCategory === "Today" || selectedCategory === "Next 7 days")) {
 
     for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
 
@@ -623,13 +637,14 @@ function displaySelectedCategory(i) {
 $(function() {
 
     if (localStorage.getItem("user") === null) {
-    window.location.replace("/users/login");
-    }
+
+      window.location.replace("/users/login");
+      }
 
     else {
 
       //display username in cog dropdown menu
-
+      SELECTEDCATEGORY = "Today";
       let usernameDisplay = localStorage.getItem('user');
       let usernameDisplayEsc = usernameDisplay.replace(/"/g,"");
       $("#username").append(
@@ -638,7 +653,8 @@ $(function() {
         ${usernameDisplayEsc}
 
         `
-  );
+        );
+      
       getUserProfileFromApi(displayUserProfile);
     };
 });

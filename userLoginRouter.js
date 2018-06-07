@@ -196,10 +196,7 @@ router.put('/editTaskToggle', jsonParser, (req, res) => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
       });
-    }).catch(err => {
-        console.error(err);
-        res.status(500).json({ message: 'Internal server error' });
-      });
+    });
 });
 
 router.delete('/deleteTask', jsonParser, (req, res) => {
