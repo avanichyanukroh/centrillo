@@ -29,11 +29,11 @@ const createAuthToken = function(user) {
 };
 
 router.post('/', (req, res) => {
-  console.log(`body: ${req.body.username}`);
+
   User
     .findOne({"username": req.body.username})
     .then(user => {
-      console.log(`user: ${user}`);
+
       res.status(200).json(user)
     })
     .catch(err => {
@@ -45,12 +45,6 @@ router.post('/', (req, res) => {
 router.get('/login', (req, res) => {
 
   res.sendFile(path.join(__dirname, 'public') + '/loginPage.html');
-});
-
-router.post('/login', localAuth, (req, res) => {
-
-  const authToken = createAuthToken(req.user);
-	res.json({'authToken': authToken, 'user': req.user});
 });
 
 router.post('/register', jsonParser, (req, res) => {
@@ -96,6 +90,12 @@ router.post('/register', jsonParser, (req, res) => {
 		});
 });
 
+router.post('/login', localAuth, (req, res) => {
+
+  const authToken = createAuthToken(req.user);
+  res.json({'authToken': authToken, 'user': req.user});
+});
+
 router.put('/addTask', (req, res) => {
 
   User.findOneAndUpdate(
@@ -125,7 +125,7 @@ router.put('/addTask', (req, res) => {
 
 
 router.put('/editTask', jsonParser, (req, res) => {
-
+  console.log(`PUT router id: ${req.body._id}`)
   User
     .findOne(
     { "username" : req.body.username })
@@ -150,7 +150,7 @@ router.put('/editTask', jsonParser, (req, res) => {
       }
       )
       .then(user => {
-        res.json(user)})
+        res.status(200).json(user)})
       .catch(err => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
@@ -166,7 +166,7 @@ router.put('/editTaskToggle', jsonParser, (req, res) => {
     .findOne(
     { "username" : req.body.username })
     .then(user => {
-      console.log(user.tasks.id(req.body._id));
+
       let task = user.tasks.id(req.body._id);
       editTask = task;
       task.remove();
@@ -189,7 +189,7 @@ router.put('/editTaskToggle', jsonParser, (req, res) => {
       }
       )
       .then(user => {
-        res.json(user)})
+        res.status(200).json(user)})
       .catch(err => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });

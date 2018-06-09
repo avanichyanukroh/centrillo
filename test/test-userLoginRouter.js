@@ -13,13 +13,17 @@ const { TEST_DATABASE_URL } = require('../config');
 
 chai.use(chaiHttp);
 
+//Global variable
 
+let taskId;
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below
 // to ensure  ata from one test does not stick
 // around for next one
 function tearDownDb() {
+
   return new Promise((resolve, reject) => {
+
     console.warn('Deleting database');
     mongoose.connection.dropDatabase()
       .then(result => resolve(result))
@@ -47,18 +51,24 @@ function seedUserData() {
         subTasks: []
       }]
     };
-  // this will return a promise
-  return User.create(seedData);
-}
+
+  return User.create(seedData)
+    .then(user => {
+
+      taskId = user.tasks[0]._id;
+    });
+};
 
 
 describe('Users API resource', function () {
 
   before(function () {
+
     return runServer(TEST_DATABASE_URL);
   });
 
   beforeEach(function () {
+
     return seedUserData();
   });
 
@@ -69,70 +79,96 @@ describe('Users API resource', function () {
   });
 
   after(function () {
+
     return closeServer();
   });
 
 
-  describe('POST endpoint', function () {
+  describe('POST endpoint to obtain user profile', function () {
 
-      it('should return one user', function () {
+    it('should return one user', function () {
 
-        let res;
-        return chai.request(app)
-          .post('/users')
-          .send({"username": "dummy"})
-          .then(_res => {
-            res = _res;
-            res.should.have.status(200);
+      let res;
+      return chai.request(app)
+        .post('/users')
+        .send({username: "dummy"})
+        .then(_res => {
+          
+          res = _res;
+          res.should.have.status(200);
 
-            res.body.username.should.not.be.null;
-            res.body.password.should.not.be.null;
-            res.body.tasks.should.not.be.null;
-
-          })
-      })
-      .timeout(5000);
-
-      it('should return users with right fields', function () {
-
-        let resUser;
-        return chai.request(app)
-          .post('/users')
-          .then(function (res) {
-
-            res.should.have.status(200);
-            res.should.be.json;
-
-            res.body.forEach(function (user) {
-              user.should.be.a('object');
-              user.should.include.keys('id', 'username', 'password', 'tasks');
-            });
-          });
-      });
+          res.body.username.should.not.be.null;
+          res.body.password.should.not.be.null;
+          res.body.tasks.should.not.be.null;
+        })
     });
 
-  /*
+    it('should return users with right fields', function () {
+
+      let res;
+      return chai.request(app)
+        .post('/users')
+        .send({username: "dummy"})
+        .then(_res => {
+
+          res = _res;
+          res.should.have.status(200);
+          res.should.be.json;
+
+          res.body.should.be.a('object');
+          res.body.should.include.keys('_id', 'username', 'password', 'tasks');
+        });
+    });
+  });
+
+  describe('POST endpoint to log in', function () {
+
+    it('should check username and password', function () {
+
+      let res;
+      return chai.request(app)
+        .post('/users/register')
+        .send({ username: "dummy", password: "dummy123" })
+        .then(_res => {
+
+          res = _res;
+          res.should.have.status(201);
+
+          res.body.username.should.not.be.null;
+          res.body.password.should.not.be.null;
+          res.body.tasks.should.not.be.null;
+
+        });
+    });
+  });
+/*
   describe('GET endpoint', function () {
 
-      it('should return login page', function () {
+    it('should return login page', function () {
 
-        let res;
-        return chai.request(app)
-          .get('/users/login')
-          .then(_res => {
-            res = _res;
-            res.should.have.status(304);
-          });
-      });
+      let res;
+      return chai.request(app)
+        .post('/users/login')
+        .send({
+
+          username: "dummy",
+          password: "dummy123"
+          })
+        .then(_res => {
+          res = _res;
+          res.should.have.status(201);
+        });
     });
+  });
+*/
 
-  describe('PUT endpoint', function () {
+  describe('PUT endpoint to add task', function () {
 
-      it('should update fields you send over', function () {
-        const updateData = {
+    it('should add a new task to tasks array', function () {
+
+      const updateData = {
 
         username: "dummy",
-        password: "dummy123",
         tasks: [{
           taskTitle: "do something else",
           category: "another category",
@@ -140,44 +176,150 @@ describe('Users API resource', function () {
           taskDateDue: "2018-06-04T21:55",
           taskNote: "another note",
           subTasks: []
-        }]
-      };
+          }]
+        };
 
-        return User
-          .findOne()
-          .then(user => {
-            updateData.id = user.id;
+    let res;
+    return chai.request(app)
+      .put('/users/addTask')
+      .send(updateData)
+      .then(_res => {
+        res = _res;
 
-            return chai.request(app)
-              .put('/addTask')
-              .send(updateData);
-          })
-          .then(res => {
-            res.should.have.status(204);
+        res.should.have.status(204);
+      })
+      .then(function() {
+
+        let res;
+        return chai.request(app)
+          .post('/users')
+          .send({username: "dummy"})
+          .then(_res => {
+            
+            res = _res;
+            res.should.have.status(200);
+
+            res.body.username.should.not.be.null;
+            res.body.password.should.not.be.null;
+            res.body.tasks.should.have.lengthOf.at.least(2);
+
           });
       });
     });
+  });
 
-  describe('DELETE endpoint', function () {
+  describe('PUT endpoint to edit task', function () {
 
-      it('should delete a task by id', function () {
+    it('should update task by id', function () {
+      console.log(`PUT test id: ${taskId}`);
+      const updateData = {
 
-        let task;
+        username: "dummy",
+        _id: taskId,
+        tasks: [{
+          taskTitle: "do something else",
+          category: "another category",
+          taskComplete: false,
+          taskDateDue: "2018-06-04T21:55",
+          taskNote: "another note",
+          subTasks: []
+          }]
+        };
 
-        return User
-          .findOne()
-          .then(_task => {
-            task = _task;
-            return chai.request(app).delete('/deleteTask');
-          })
-          .then(res => {
-            res.should.have.status(204);
-            return User.findById(task.id);
-          })
-          .then(_task => {
+    let res;
+    return chai.request(app)
+      .put('/users/editTask')
+      .send(updateData)
+      .then(_res => {
 
-            should.not.exist(_task);
+        res = _res;
+        res.should.have.status(200);
+      })
+      .then(function() {
+
+        let res;
+        return chai.request(app)
+          .post('/users')
+          .send({username: "dummy"})
+          .then(_res => {
+            
+            res = _res;
+            res.should.have.status(200);
+
+            res.body.username.should.not.be.null;
+            res.body.password.should.not.be.null;
+            res.body.tasks.should.have.lengthOf.at.least(1);
+
           });
       });
-    });*/
+    });
+  });
+
+  describe('PUT endpoint toggle taskComplete', function () {
+
+    it('should change taskComplete by id from false to true', function () {
+
+    let res;
+    return chai.request(app)
+      .put('/users/editTaskToggle')
+      .send({ username: "dummy", _id: taskId })
+      .then(_res => {
+        
+        res = _res;
+        res.should.have.status(200);
+      })
+      .then(function() {
+
+        let res;
+        return chai.request(app)
+          .post('/users')
+          .send({username: "dummy"})
+          .then(_res => {
+            
+            res = _res;
+            res.should.have.status(200);
+
+            res.body.username.should.not.be.null;
+            res.body.password.should.not.be.null;
+            res.body.tasks.should.have.lengthOf.at.least(1);
+          });
+      });
+    });
+  });
+
+  describe('Delete endpoint to delete task', function () {
+
+    it('should delete task by id', function () {
+
+    let res;
+    return chai.request(app)
+      .delete('/users/deleteTask')
+      .send({ username: "dummy", _id: taskId })
+      .then(_res => {
+
+        res = _res;
+        res.should.have.status(204);
+      })
+      .then(function() {
+
+        let res;
+        return chai.request(app)
+          .post('/users')
+          .send({username: "dummy"})
+          .then(_res => {
+            
+            res = _res;
+            res.should.have.status(200);
+
+            res.body.username.should.not.be.null;
+            res.body.password.should.not.be.null;
+            res.body.tasks.should.have.lengthOf.at.least(0);
+          });
+      });
+    });
+  });
 });
+
+
+
+//.then(_task => {should.not.exist(_task);});

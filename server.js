@@ -5,16 +5,6 @@ const path = require('path');
 const passport = require('passport');
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/usersDB');
-const db = mongoose.connection;
- 
-db.on('error', function (err) {
-console.log('connection error', err);
-});
-db.once('open', function () {
-console.log('connected.');
-});
-
 const app = express();
 app.use(express.static('public'));
 
