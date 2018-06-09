@@ -178,8 +178,6 @@ $('#today, #today-m').empty();
 
     );
 
-  $('.todayCount').text(`${USERPROFILE.tasks.length}`);
-
   $('#7Days, #7Days-m').empty();
   $('#7Days, #7Days-m').append(
     `
@@ -192,10 +190,6 @@ $('#today, #today-m').empty();
     </a>
     `
     );
-
-  $('.7DayCount').text(`${USERPROFILE.tasks.length}`);
-
-
 
   $('#overview, #overview-m').empty();
   $('#overview, #overview-m').append(
@@ -436,6 +430,9 @@ function displayCategoryAndTask(selectedCategory) {
     `
   );
 
+  let todayCount = 0;
+  let weekCount = 0;
+
   if (selectedCategory === "Today")  {
 
     for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
@@ -443,6 +440,8 @@ function displayCategoryAndTask(selectedCategory) {
       if (CURRENTDATE == USERPROFILE.tasks[i].taskDateDue.slice(0, 10)) {
 
         displaySelectedCategory(i);
+
+        todayCount ++;
       };
     }
   }
@@ -456,6 +455,7 @@ function displayCategoryAndTask(selectedCategory) {
         if (USERPROFILE.tasks[i].taskDateDue.slice(0, 10) == NEXT7DAYS[j]) {
 
           displaySelectedCategory(i);
+          weekCount ++;
         };
       }
     }
@@ -479,6 +479,9 @@ function displayCategoryAndTask(selectedCategory) {
       };
     }
   }
+
+  updateFilterCounts(todayCount, weekCount);
+
   $(watchEditTaskForm);
   $(watchDeleteTaskForm);
   $(watchTaskCompleteToggle);
@@ -632,6 +635,13 @@ function displaySelectedCategory(i) {
       `
   );
 };
+
+function updateFilterCounts(todayCount, weekCount) {
+
+  $('.todayCount').text(todayCount);
+  $('.7DayCount').text(weekCount);
+
+}
 
   //on page load, if not logged in, redirect to login page.
 $(function() {
