@@ -430,9 +430,6 @@ function displayCategoryAndTask(selectedCategory) {
     `
   );
 
-  let todayCount = 0;
-  let weekCount = 0;
-
   if (selectedCategory === "Today")  {
 
     for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
@@ -440,10 +437,8 @@ function displayCategoryAndTask(selectedCategory) {
       if (CURRENTDATE == USERPROFILE.tasks[i].taskDateDue.slice(0, 10)) {
 
         displaySelectedCategory(i);
-
-        todayCount ++;
       };
-    }
+    };
   }
 
   if (selectedCategory === "Next 7 days")  {
@@ -455,10 +450,9 @@ function displayCategoryAndTask(selectedCategory) {
         if (USERPROFILE.tasks[i].taskDateDue.slice(0, 10) == NEXT7DAYS[j]) {
 
           displaySelectedCategory(i);
-          weekCount ++;
         };
-      }
-    }
+      };
+    };
   }
 
   if (selectedCategory === "Overview") {
@@ -466,7 +460,7 @@ function displayCategoryAndTask(selectedCategory) {
     for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
 
       displaySelectedCategory(i);
-    }
+    };
   }
 
   if (!(selectedCategory === "Overview" || selectedCategory === "Today" || selectedCategory === "Next 7 days")) {
@@ -477,10 +471,10 @@ function displayCategoryAndTask(selectedCategory) {
 
         displaySelectedCategory(i);
       };
-    }
-  }
+    };
+  };
 
-  updateFilterCounts(todayCount, weekCount);
+  updateFilterCounts();
 
   $(watchEditTaskForm);
   $(watchDeleteTaskForm);
@@ -638,6 +632,28 @@ function displaySelectedCategory(i) {
 
 function updateFilterCounts(todayCount, weekCount) {
 
+  let todayCount = 0;
+  let weekCount = 0;
+
+  for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
+
+      if (CURRENTDATE == USERPROFILE.tasks[i].taskDateDue.slice(0, 10)) {
+
+        todayCount ++;
+      };
+    };
+
+  for (let i = 0; i < USERPROFILE.tasks.length; i ++) {
+
+      for (let j = 0; j < NEXT7DAYS.length; j ++) {
+
+        if (USERPROFILE.tasks[i].taskDateDue.slice(0, 10) == NEXT7DAYS[j]) {
+
+          weekCount ++;
+        };
+      };
+    };
+    
   $('.todayCount').text(todayCount);
   $('.7DayCount').text(weekCount);
 
