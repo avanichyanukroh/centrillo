@@ -21,7 +21,12 @@ Landing Page:
 
 ![landing page](screenshot/landingPage.png)
 
+## Demo
 
+username: dummy
+password: dummy123
+
+Log in with a preexisting demo account listed above and give it a try.
 
 ## Built With
 
@@ -36,10 +41,18 @@ Landing Page:
 ## Features
 
 * Add, update, and delete tasks.
-* Categorize tasks.
+* Categorized tasks.
+* Filter by "Today", "Next 7 days", or specific category.
 * Attach notes to individual tasks.
 * Have due dates for individual tasks.
-* Mark tasks as complete.
+* Mark tasks as complete/incomplete.
+
+## Future implementations
+
+* Set priority levels.
+* Reminder and alarm feature.
+* Share and collaborate with other users.
+* Subtasks for each tasks.
 
 ## Author
 
