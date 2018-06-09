@@ -630,7 +630,7 @@ function displaySelectedCategory(i) {
   );
 };
 
-function updateFilterCounts(todayCount, weekCount) {
+function updateFilterCounts() {
 
   let todayCount = 0;
   let weekCount = 0;
@@ -653,7 +653,7 @@ function updateFilterCounts(todayCount, weekCount) {
         };
       };
     };
-    
+
   $('.todayCount').text(todayCount);
   $('.7DayCount').text(weekCount);
 
