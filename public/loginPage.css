@@ -1,6 +1,39 @@
-body{
+body {
 	color: #fff;
 	font-family: 'Roboto', sans-serif;
+}
+#circleItLogo {
+
+	background-image: url("./circle-it-logo.png");
+	height: 45px;
+	width: 45px;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	border: 2px solid white;
+	border-radius: 7px;
+	background-color: #fff;
+
+}
+#businessMeetingImage {
+
+	background-image: url("./business-meeting.jpeg");
+	background-repeat: no-repeat;
+	height: 400px;
+	background-size: 100%;
+	background-position: center;
+    color: white;
+    text-shadow: 0 1px black;
+    
+    background: rgba(0,0,0,0.18);
+    padding: 4px 8px;
+
+}
+
+#businessMeetingImage:after {
+
+	width: 100%;
+	height: 100%;
+	background-color:rgba(0, 0, 0, 0.5);
 }
 .form-control {
 	height: 41px;
@@ -9,9 +42,11 @@ body{
 	border: none;
 }
 .form-control:focus {
+
 	background: #e2e2e2;
 }
-.form-control, .btn {        
+.form-control, .btn {   
+
     border-radius: 3px;
 }
 .signup-login-form {
@@ -19,6 +54,7 @@ body{
 	margin: 30px auto;
 }
 .signup-login-form form {
+
 	color: #999;
 	border-radius: 3px;
 	margin-bottom: 15px;
@@ -27,28 +63,35 @@ body{
     padding: 30px;
 }
 .signup-login-form h2 {
+
 	color: #333;
 	font-weight: bold;
     margin-top: 0;
 }
 .signup-login-form hr {
+
     margin: 0 -30px 20px;
 }    
 .signup-login-form .form-group {
+
 	margin-bottom: 20px;
 	padding-left:10px;
 	padding-right: 10px;
 }
 .signup-login-form input[type="checkbox"] {
+
 	margin-top: 3px;
 }
 .signup-login-form .row div:first-child {
+
 	padding-right: 10px;
 }
 .signup-login-form .row div:last-child {
+
 	padding-left: 10px;
 }
-.signup-login-form .btn {        
+.signup-login-form .btn {       
+
     font-size: 16px;
     font-weight: bold;
 	background: #3598dc;
@@ -56,32 +99,38 @@ body{
 	min-width: 140px;
 }
 .signup-login-form .btn:hover, .signup-login-form .btn:focus {
+
 	background: #2389cd !important;
     outline: none;
 }
 .signup-login-form a {
+
 	color: #fff;
 	text-decoration: underline;
 }
 .signup-login-form a:hover {
+
 	text-decoration: none;
 }
 .signup-login-form form a {
+
 	color: #3598dc;
 	text-decoration: none;
 }	
 .signup-login-form form a:hover {
+
 	text-decoration: underline;
 }
 .signup-login-form .hint-text {
+
 	padding-bottom: 15px;
 	text-align: center;
 }
-
 .navbar {
+
 	padding: 0;
 }
-
 .feedbackText {
+
 	color: black;
 }

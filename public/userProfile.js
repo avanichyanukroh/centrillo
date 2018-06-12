@@ -20,7 +20,7 @@ function getUserProfileFromApi(displayUserProfile) {
         dataType: 'json',
         contentType: 'application/json; charset= utf-8',
         success: function(data) {
-            console.log(data);
+
             $('#mainContent').empty();
             $('.modal').modal('hide');
 
@@ -378,7 +378,6 @@ function watchTaskCompleteToggle() {
             _id: taskId,
             username: JSON.parse(localStorage.getItem('user'))
           };
-          console.log(editTask);
 
           editTaskToggleToApi(editTask);
 
