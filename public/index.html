@@ -13,13 +13,14 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-12">
-
+						<div class="float-left mr-3 mt-1 d-none d-md-block" id="circleItLogo"></div>
 						<!-- cog dropdown menu -->
 						<nav class="navbar" role="navigation">
+
 							<h1 class="d-none d-md-block h2 pt-2">Circle.it</h1>
 
 							<!-- bars icon for mobile viewport (collapse) drop down menu -->
-							<i class="fa far fa-bars fa-lg navbar-toggler float-left d-md-none mt-2 pb-2 collapseOnSelect" id="navCollapse" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation"></i>
+							<i class="fa far fa-bars fa-lg navbar-toggler float-left d-md-none mt-2 pb-2" id="navCollapse" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation"></i>
 							
 							<div class="dropdown">
 
@@ -56,7 +57,7 @@
 				</div>
 
 				<!-- collapsed menu for bars icon -->	
-				<div class="collapse" id="navbarToggleExternalContent">
+				<div class="collapse watchNavSelectAndCollapse" id="navbarToggleExternalContent">
 					<div class="bg-light p-3 mb-3 mt-3">
 
 					<div id="today-m"></div>
@@ -66,11 +67,11 @@
 						<div class="accordion" id="accordion">
 							<div class="list-group">
 
-								<a href="#" class="list-group-item bg-light border-0 arrowToggle" data-toggle="collapse" data-target="#collapse-sm-1" aria-expanded="true" aria-controls="collapse-sm-1">
+								<div class="text-primary border-0 arrowToggle" data-toggle="collapse" data-target="#collapse-sm-1" aria-expanded="true" aria-controls="collapse-sm-1">
 									<i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
 									&nbsp;
 									Categories
-								</a>
+								</div>
 
 								<div id="collapse-sm-1" class="collapse border-top" data-parent="#accordion">
 

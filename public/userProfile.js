@@ -419,6 +419,15 @@ function displayCategoryAndTask(selectedCategory) {
     return new Date(a.taskDateDue) - new Date(b.taskDateDue);
   });
   
+  function  watchNavSelectAndCollapse() {
+
+    $(".list-group-item").click(function() {
+
+    $(".watchNavSelectAndCollapse").removeClass("show");
+
+    $("#navCollapse").toggleClass("fa-window-close fa-bars");
+    })
+}
 
   $('#mainContent').append(
     `
@@ -478,6 +487,7 @@ function displayCategoryAndTask(selectedCategory) {
   $(watchEditTaskForm);
   $(watchDeleteTaskForm);
   $(watchTaskCompleteToggle);
+  $(watchNavSelectAndCollapse);
 };
 
 function displaySelectedCategory(i) {
