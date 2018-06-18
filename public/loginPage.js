@@ -109,8 +109,8 @@ function watchChangeToSignUpForm() {
 
     	event.preventDefault();
 
-	    $('#loginForm').addClass("d-none");
-	    $('#signUpForm').removeClass("d-none");
+		$('.modal').modal('hide');
+		$('#signUpModal').modal('show');
     });
 }
 
@@ -120,9 +120,8 @@ function watchChangeToLoginForm() {
 
     	event.preventDefault();
 
-	    $('#signUpForm').addClass("d-none");
-	    $('#loginForm').removeClass("d-none");
-	    $('signUpUserFeedback').empty();
+		$('.modal').modal('hide');
+		$('#loginModal').modal('show');
     });
 }
 
@@ -132,8 +131,8 @@ function watchChangeToLoginForm2() {
 
     	event.preventDefault();
 
-	    $('#loginForm').removeClass("d-none");
-	    $('#signUpUserFeedback').empty();
+		$('.modal').modal('hide');
+		$('#loginModal').modal('show');;
     });
 }
 
