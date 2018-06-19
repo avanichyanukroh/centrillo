@@ -49,3 +49,10 @@ header {
 
 	font-size: 11px;
 }
+
+.taskInfo {
+
+	text-align: right;
+	float: right;
+    right: 0px;
+}

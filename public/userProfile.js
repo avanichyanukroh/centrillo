@@ -501,64 +501,101 @@ function displaySelectedCategory(i) {
   let time = dateTimeArray[1].slice(0,5) + dateTimeArray[1].slice(8,12);
 
   let taskHTML =  `
-        <ul class="list-unstyled">
+        <ul class="list-unstyled border-bottom pb-2">
             <li>
                 <div class="m-0 p-0">
-                    <span>`;
+                `;
   if (USERPROFILE.tasks[i].taskComplete) {
 
     taskHTML +=  `
+
+                <div class="d-none d-md-inline-block">
                 <i class="far fa-lg pr-2 taskCompleteToggle fa-check-circle" id="toggle-${USERPROFILE.tasks[i]._id}"></i>
                 <span class="taskTitle strikeThrough" id="title-${USERPROFILE.tasks[i]._id}">${USERPROFILE.tasks[i].taskTitle}</span>
-                </span>
+                <i class="far fa-sticky-note ml-2" type="button" data-toggle="modal" data-target="#noteModal-${i}"></i>
+                </div>
+
+                <div class="d-block d-md-none mb-2">
+                <i class="far fa-lg pr-2 taskCompleteToggle fa-check-circle" id="toggle-${USERPROFILE.tasks[i]._id}"></i>
+                <span class="taskTitle strikeThrough" id="title-${USERPROFILE.tasks[i]._id}">${USERPROFILE.tasks[i].taskTitle}</span>
+                </div>
                 `;
   }
   else {
 
     taskHTML += `
+
+                <div class="d-none d-md-inline-block">
                 <i class="far fa-circle fa-lg pr-2 taskCompleteToggle" id="toggle-${USERPROFILE.tasks[i]._id}"></i>
                 <span class="taskTitle" id="title-${USERPROFILE.tasks[i]._id}">${USERPROFILE.tasks[i].taskTitle}</span>
-                </span>
+                <i class="far fa-sticky-note ml-2" type="button" data-toggle="modal" data-target="#noteModal-${i}"></i>
+                </div>
+
+                <div class="d-block d-md-none mb-2">
+                <i class="far fa-circle fa-lg pr-2 taskCompleteToggle" id="toggle-${USERPROFILE.tasks[i]._id}"></i>
+                <span class="taskTitle" id="title-${USERPROFILE.tasks[i]._id}">${USERPROFILE.tasks[i].taskTitle}</span>
+                </div>
                 `;
   }
 
   $('#tasks').append(
     taskHTML += 
                   `
-                  <i class="far fa-sticky-note ml-2" type="button" data-toggle="modal" data-target="#noteModal-${i}"></i>
+                  <div class="d-none d-md-inline-block float-right">
+                    <i class="far fa-edit float-right" id="taskDropDownMenu" id="dropdownMenuButton" aria-hidden="true" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 
-                  <i class="far fa-edit float-right" id="taskDropDownMenu" id="dropdownMenuButton" aria-hidden="true" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                    <span class="pr-2 font-weight-light newDateFontSize">${date + time}</span>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                  <span class="pr-2 font-weight-light float-right newDateFontSize">${date + time}</span>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        
+                        <a class="dropdown-item border-bottom border-white" data-toggle="modal" data-target="#editTaskModal-${USERPROFILE.tasks[i]._id}" href="#">
+                            <i class="fas fa-pencil-alt"></i>
+                            &nbsp;
+                            Edit task
+                        </a>
 
-                      
-                      <a class="dropdown-item border-bottom border-white" data-toggle="modal" data-target="#editTaskModal-${USERPROFILE.tasks[i]._id}" href="#">
-                          <i class="fas fa-pencil-alt"></i>
-                          &nbsp;
-                          Edit task
-                      </a>
+                        <a class="dropdown-item d-none" id="createSubTask" href="#">
+                            <i class="fas fa-plus"></i>
+                            &nbsp;
+                            Create subtask
+                        </a>
 
-                      <a class="dropdown-item d-none" id="createSubTask" href="#">
-                          <i class="fas fa-plus"></i>
-                          &nbsp;
-                          Create subtask
-                      </a>
-
-                      <a class="dropdown-item" id="deleteTask" data-toggle="modal" data-target="#deleteTaskModal-${USERPROFILE.tasks[i]._id}" href="#">
-                          <i class="fas fa-minus-circle"></i>
-                          &nbsp;
-                          Delete task
-                      </a>
-
+                        <a class="dropdown-item" id="deleteTask" data-toggle="modal" data-target="#deleteTaskModal-${USERPROFILE.tasks[i]._id}" href="#">
+                            <i class="fas fa-minus-circle"></i>
+                            &nbsp;
+                            Delete task
+                        </a>
+                    </div>
                   </div>
+                  <div class="d-block d-md-none pl-2">
 
+                    <i class="far fa-edit float-right" id="taskDropDownMenu" id="dropdownMenuButton" aria-hidden="true" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                    <i class="far fa-sticky-note mr-3 float-right" type="button" data-toggle="modal" data-target="#noteModal-${i}"></i>
+                    <span class="pr-2 font-weight-light newDateFontSize pl-4">${date + time}</span>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                        
+                        <a class="dropdown-item border-bottom border-white" data-toggle="modal" data-target="#editTaskModal-${USERPROFILE.tasks[i]._id}" href="#">
+                            <i class="fas fa-pencil-alt"></i>
+                            &nbsp;
+                            Edit task
+                        </a>
+
+                        <a class="dropdown-item d-none" id="createSubTask" href="#">
+                            <i class="fas fa-plus"></i>
+                            &nbsp;
+                            Create subtask
+                        </a>
+
+                        <a class="dropdown-item" id="deleteTask" data-toggle="modal" data-target="#deleteTaskModal-${USERPROFILE.tasks[i]._id}" href="#">
+                            <i class="fas fa-minus-circle"></i>
+                            &nbsp;
+                            Delete task
+                        </a>
+                    </div>
+                  </div>
               </div>
-             <hr>
-              <span class="d-none">
-                  <span>${USERPROFILE.tasks[i].taskComplete}</span>
-                  <span>${USERPROFILE.tasks[i].taskDateDue}</span>
-              </span>
+
               <div id="subTasks"></div>
           </li>
       </ul>
