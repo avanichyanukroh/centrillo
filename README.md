@@ -21,6 +21,10 @@ Landing Page:
 
 ![landing page](screenshot/landingPage.png)
 
+Mobile Landing Page:
+
+![mobile landing page](screenshot/landingPageMobile.png)
+
 ## Demo
 
 username: dummy
