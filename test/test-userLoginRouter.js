@@ -18,7 +18,7 @@ chai.use(chaiHttp);
 let taskId;
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below
-// to ensure  ata from one test does not stick
+// to ensure data from one test does not stick
 // around for next one
 function tearDownDb() {
 
@@ -33,9 +33,7 @@ function tearDownDb() {
 
 // used to put randomish documents in db
 // so we have data to work with and assert about.
-// we use the Faker library to automatically
-// generate placeholder values for author, title, content
-// and then we insert that data into mongo
+
 function seedUserData() {
   console.info('seeding User data');
   let seedData = {

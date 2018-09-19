@@ -127,11 +127,15 @@ body {
 }
 
 .dummy-login {
+	
+	color: black;
 	margin-top: 15px;
 	text-overflow: bold;
 }
 
 .dummy-login-description {
+	
+	color: black;
 	margin-bottom: 15px;
 }
 
