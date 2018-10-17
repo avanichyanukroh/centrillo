@@ -23,6 +23,15 @@ header {
 
 }
 
+.fas, .fa {
+	cursor: pointer;
+}
+
+.btn {
+
+	border-radius: 4px;
+}
+
 /* Fixes cog dropdown-menu to drop to the left instead of right (off the screen)*/
 .dropdown-menu {
 
