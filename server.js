@@ -4,9 +4,11 @@ const morgan = require('morgan');
 const path = require('path');
 const passport = require('passport');
 const mongoose = require('mongoose');
+const favicon = require('serve-favicon');
 
 const app = express();
 app.use(express.static('public'));
+app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 
 const userRouter = require('./userLoginRouter');
 
